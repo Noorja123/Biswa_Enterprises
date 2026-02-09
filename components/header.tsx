@@ -50,12 +50,6 @@ export function Header() {
               {item.name}
             </Link>
           ))}
-          <Button
-            asChild
-            className="ml-6 rounded-md bg-[#FF6E39] px-5 text-white hover:bg-[#d35400]"
-          >
-            <Link href="/contact">Employee Portal</Link>
-          </Button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -87,14 +81,6 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
-            <Button
-              asChild
-              className="mt-2 rounded-md bg-[#FF6E39] text-white hover:bg-[#d35400]"
-            >
-              <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-                Employee Portal
-              </Link>
-            </Button>
           </div>
         </nav>
       )}
