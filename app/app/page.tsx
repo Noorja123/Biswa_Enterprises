@@ -208,6 +208,7 @@ export default function LabourManagementPortal() {
     totalEmployees: employees.length,
     available: employees.filter(emp => emp.status === 'Active').length,
     hourlyLabours: employees.filter(emp => emp.type === 'Hourly').length,
+    permanentLabours: employees.filter(emp => emp.type === 'Permanent').length,
   };
 
   const handleExportCSV = () => {
@@ -297,7 +298,7 @@ export default function LabourManagementPortal() {
       {/* Main Content */}
       <main className="w-full mx-auto px-3 sm:px-4 py-6 sm:py-8">
         {/* Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Total Employees Card */}
           <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-blue-900">
             <div className="p-6 flex items-center justify-between">
@@ -328,6 +329,17 @@ export default function LabourManagementPortal() {
                 <p className="text-4xl font-bold text-gray-800">{stats.hourlyLabours}</p>
               </div>
               <Clock size={48} className="text-orange-500 opacity-80" />
+            </div>
+          </div>
+
+          {/* Permanent Labours Card */}
+          <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-indigo-500">
+            <div className="p-6 flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm mb-1">Permanent Labours</p>
+                <p className="text-4xl font-bold text-gray-800">{stats.permanentLabours}</p>
+              </div>
+              <Briefcase size={48} className="text-indigo-500 opacity-80" />
             </div>
           </div>
         </div>

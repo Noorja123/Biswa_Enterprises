@@ -476,8 +476,8 @@ function EditEventModal({
 function EventCard({
   event,
   onEdit,
-  onDelete,
-}: { event: Event; onEdit: (event: Event) => void; onDelete: (eventId: number) => void }) {
+  onRequestDelete,
+}: { event: Event; onEdit: (event: Event) => void; onRequestDelete: (event: Event) => void }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6">
       <div className="flex items-start justify-between mb-4">
@@ -530,7 +530,7 @@ function EventCard({
           Edit
         </button>
         <button
-          onClick={() => onDelete(event.id)}
+          onClick={() => onRequestDelete(event)}
           className="flex items-center justify-center gap-2 bg-red-100 hover:bg-red-200 text-red-500 font-medium py-3 px-4 rounded-xl transition-colors"
         >
           <Trash2 className="w-4 h-4" />
@@ -577,6 +577,7 @@ export function EventDashboard() {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState<Event | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
 
   const handleEditClick = (event: Event) => {
@@ -611,6 +612,11 @@ export function EventDashboard() {
 
   const handleDeleteEvent = (eventId: number) => {
     setEvents(events.filter((e) => e.id !== eventId))
+    setDeleteConfirm(null)
+  }
+
+  const requestDeleteEvent = (event: Event) => {
+    setDeleteConfirm(event)
   }
 
   const handleExport = () => {
@@ -735,10 +741,45 @@ export function EventDashboard() {
                 event.phone.includes(searchTerm)
             )
             .map((event) => (
-              <EventCard key={event.id} event={event} onEdit={handleEditClick} onDelete={handleDeleteEvent} />
+              <EventCard key={event.id} event={event} onEdit={handleEditClick} onRequestDelete={requestDeleteEvent} />
             ))}
         </div>
       </main>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            <div className="bg-red-600 text-white px-6 py-4">
+              <h2 className="text-2xl font-bold">Confirm Delete</h2>
+            </div>
+
+            <div className="p-8">
+              <p className="text-gray-700 text-lg mb-2">
+                Are you sure you want to delete <span className="font-bold">{deleteConfirm.title}</span>?
+              </p>
+              <p className="text-gray-600 text-sm">
+                This action cannot be undone. The event will be permanently removed from the dashboard.
+              </p>
+
+              <div className="flex gap-4 justify-end mt-8">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleDeleteEvent(deleteConfirm.id)}
+                  className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Edit Event Modal */}
       <EditEventModal
