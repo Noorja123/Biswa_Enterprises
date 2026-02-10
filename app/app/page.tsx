@@ -276,7 +276,7 @@ export default function LabourManagementPortal() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-800 to-blue-900 text-white shadow-md">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-0 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-semibold">Employee Management Portal</h1>
           </div>
@@ -296,7 +296,7 @@ export default function LabourManagementPortal() {
       </header>
 
       {/* Main Content */}
-      <main className="w-full mx-auto px-3 sm:px-4 py-6 sm:py-8">
+      <main className="w-full mx-auto py-6 sm:py-8">
         {/* Dashboard Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Total Employees Card */}
@@ -377,20 +377,20 @@ export default function LabourManagementPortal() {
         </div>
 
         {/* Data Table */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 sm:mb-0 mx-4">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 sm:mb-0">
           <div className="overflow-x-auto">
-            <table className="w-full" style={{tableLayout: 'fixed'}}>
+            <table className="w-full" style={{tableLayout: 'auto'}}>
               <thead>
                 <tr className="bg-blue-900 text-white">
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '6%'}}>Photo</th>
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '14%'}}>Name</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '8%'}}>Photo</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '22%'}}>Name</th>
                   <th className="px-3 py-4 text-left font-semibold" style={{width: '5%'}}>Age</th>
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '15%'}}>Contact </th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '18%'}}>Contact</th>
                   <th className="px-3 py-4 text-left font-semibold" style={{width: '12%'}}>Skill</th>
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '11%'}}>Status</th>
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '10%'}}>Type</th>
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '12%'}}>Total Salary</th>
-                  <th className="px-3 py-4 text-left font-semibold" style={{width: '12%'}}>Actions</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '8%'}}>Status</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '7%'}}>Type</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '11%'}}>Total Salary</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '9%'}}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -401,22 +401,22 @@ export default function LabourManagementPortal() {
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <td className="px-3 py-4" style={{width: '6%'}}>
+                    <td className="px-3 py-4" style={{width: '8%'}}>
                       {employee.photo.startsWith('data:') || employee.photo.startsWith('http') ? (
                         <img 
                           src={employee.photo} 
                           alt={employee.name}
-                          className="h-10 w-10 rounded-full object-cover"
+                          className="h-12 w-12 rounded-full object-cover"
                         />
                       ) : (
                         <span className="text-3xl">{employee.photo}</span>
                       )}
                     </td>
-                    <td className="px-3 py-4 font-medium text-gray-900" style={{width: '14%'}}>{employee.name}</td>
+                    <td className="px-3 py-4 font-medium text-gray-900" style={{width: '22%'}}>{employee.name}</td>
                     <td className="px-3 py-4 text-gray-700" style={{width: '5%'}}>{employee.age}</td>
-                    <td className="px-3 py-4 text-gray-700" style={{width: '15%'}}>{employee.contact}</td>
+                    <td className="px-3 py-4 text-gray-700" style={{width: '18%'}}>{employee.contact}</td>
                     <td className="px-3 py-4 text-gray-700" style={{width: '12%'}}>{employee.skill}</td>
-                    <td className="px-3 py-4" style={{width: '11%'}}>
+                    <td className="px-3 py-4" style={{width: '8%'}}>
                       <Select 
                         value={employee.status} 
                         onValueChange={(value) => handleStatusChange(employee.id, value as 'Active' | 'Busy')}
@@ -440,7 +440,7 @@ export default function LabourManagementPortal() {
                         </SelectContent>
                       </Select>
                     </td>
-                    <td className="px-3 py-4" style={{width: '10%'}}>
+                    <td className="px-3 py-4" style={{width: '7%'}}>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           employee.type === 'Permanent'
@@ -451,8 +451,8 @@ export default function LabourManagementPortal() {
                         {employee.type}
                       </span>
                     </td>
-                    <td className="px-3 py-4 font-medium text-gray-900" style={{width: '12%'}}>₹{employee.salary.toLocaleString()}</td>
-                    <td className="px-3 py-4" style={{width: '12%'}}>
+                    <td className="px-3 py-4 font-medium text-gray-900" style={{width: '11%'}}>₹{employee.salary.toLocaleString()}</td>
+                    <td className="px-3 py-4" style={{width: '9%'}}>
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => setSelectedEmployee(employee)}

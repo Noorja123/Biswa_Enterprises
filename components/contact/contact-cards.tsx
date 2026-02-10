@@ -26,8 +26,8 @@ const contactMethods = [
 
 export function ContactCards() {
   return (
-    <section className="bg-gray-50 px-4 py-16 lg:px-8">
-      <div className="mx-auto max-w-4xl">
+    <section className="bg-gray-50 px-4 py-16">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 md:grid-cols-3">
           {contactMethods.map((method) => (
             <div

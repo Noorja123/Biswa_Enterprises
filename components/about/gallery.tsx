@@ -66,7 +66,7 @@ export function Gallery() {
           <div className="flex gap-4 pb-4" style={{ minWidth: 'max-content' }}>
             {galleryImages.map((image, index) => (
               <div
-                key={image.alt}
+                key={`${image.src}-${index}`}
                 className="animate-on-load animate-zoom-in-up group relative h-64 w-64 flex-shrink-0 overflow-hidden rounded-xl"
                 style={{ animationDelay: `${0.1 + index * 0.1}s` }}
               >

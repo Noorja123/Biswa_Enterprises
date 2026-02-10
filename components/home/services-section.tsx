@@ -20,8 +20,8 @@ const services = [
 
 export function ServicesSection() {
   return (
-    <section className="bg-gray-50 px-4 py-16 lg:px-8">
-      <div className="mx-auto max-w-6xl">
+    <section className="bg-gray-50 px-4 py-16">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="animate-on-load animate-zoom-in mb-8 text-center">
           <h2 className="mb-3 text-3xl font-bold text-[#07538D] lg:text-4xl">Our Services</h2>
           <p className="text-gray-600">Comprehensive event staffing solutions tailored to your needs</p>

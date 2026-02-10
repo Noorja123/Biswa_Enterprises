@@ -4,7 +4,7 @@ import Link from "next/link"
 export function AboutHero() {
   return (
     <section className="relative overflow-hidden bg-white px-4 py-10 text-black lg:px-8 lg:py-16">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div>
             <h1 className="mb-4 text-4xl font-extrabold lg:text-5xl tracking-tight">

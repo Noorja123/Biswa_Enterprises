@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-white via-white to-gray-50 px-4 py-12 lg:py-24">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div className="order-2 lg:order-1">
             <h1 className="mb-4 text-3xl font-extrabold leading-tight tracking-tight text-[#07538D] lg:text-5xl">

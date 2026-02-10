@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin } from "lucide-react"
 export function Footer() {
   return (
     <footer className="bg-[#07538D] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid gap-10 md:grid-cols-3">
           {/* Phone Numbers */}
           <div className="flex items-start gap-3">

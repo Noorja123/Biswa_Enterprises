@@ -477,14 +477,24 @@ function EventCard({
   event,
   onEdit,
   onRequestDelete,
-}: { event: Event; onEdit: (event: Event) => void; onRequestDelete: (event: Event) => void }) {
+  onChangeStatus,
+}: { event: Event; onEdit: (event: Event) => void; onRequestDelete: (event: Event) => void; onChangeStatus: (id: number, status: string) => void }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6">
       <div className="flex items-start justify-between mb-4">
         <h3 className="text-3xl font-semibold text-blue-800">{event.title}</h3>
-        <span className={`rounded-full ${getStatusStyles(event.status)}`}>
-          {event.status}
-        </span>
+        <div>
+          <Select value={event.status} onValueChange={(value) => onChangeStatus(event.id, value)}>
+            <SelectTrigger className={`rounded-full ${getStatusStyles(event.status)} h-auto px-3 py-1`}> 
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Upcoming">Upcoming</SelectItem>
+              <SelectItem value="Ongoing">Ongoing</SelectItem>
+              <SelectItem value="Completed">Completed</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-6 text-base text-gray-600 mb-5">
@@ -619,6 +629,10 @@ export function EventDashboard() {
     setDeleteConfirm(event)
   }
 
+  const handleChangeEventStatus = (id: number, status: string) => {
+    setEvents(events.map(e => e.id === id ? { ...e, status } : e))
+  }
+
   const handleExport = () => {
     const csv = [
       ["Event Name", "Status", "Date", "Location", "Employees", "Contact", "Asked Payment", "Paid Amount", "Remaining Money"],
@@ -695,7 +709,7 @@ export function EventDashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto py-8">
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {dynamicStats.map((stat) => (
@@ -741,7 +755,7 @@ export function EventDashboard() {
                 event.phone.includes(searchTerm)
             )
             .map((event) => (
-              <EventCard key={event.id} event={event} onEdit={handleEditClick} onRequestDelete={requestDeleteEvent} />
+              <EventCard key={event.id} event={event} onEdit={handleEditClick} onRequestDelete={requestDeleteEvent} onChangeStatus={handleChangeEventStatus} />
             ))}
         </div>
       </main>
