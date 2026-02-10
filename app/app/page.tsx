@@ -190,6 +190,7 @@ export default function LabourManagementPortal() {
       hours: 0,
       pendingSalary: 0,
       liability: 0,
+      remaining: 0,
       imageFile: undefined,
     });
     setIsAddingLabour(true);
@@ -209,10 +210,16 @@ export default function LabourManagementPortal() {
       name: '',
       age: 0,
       contact: '',
+      address: '',
       skill: '',
       status: 'Active',
       type: 'Permanent',
       salary: 0,
+      hours: 0,
+      pendingSalary: 0,
+      liability: 0,
+      remaining: 0,
+      imageFile: undefined,
     });
   };
 
@@ -233,6 +240,7 @@ export default function LabourManagementPortal() {
       hours: 0,
       pendingSalary: 0,
       liability: 0,
+      remaining: 0,
       imageFile: undefined,
     });
   };
@@ -694,8 +702,12 @@ export default function LabourManagementPortal() {
                   </label>
                   <input
                     type="tel"
+                    inputMode="numeric"
                     value={formData.contact}
-                    onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                    onChange={(e) => {
+                      const numericValue = e.target.value.replace(/[^0-9+\s-]/g, '');
+                      setFormData({ ...formData, contact: numericValue });
+                    }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                   />
                 </div>
@@ -868,15 +880,15 @@ export default function LabourManagementPortal() {
       {/* Add Labour Modal */}
       {isAddingLabour && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="bg-blue-900 text-white px-6 py-4 sticky top-0">
               <h2 className="text-2xl font-bold">Add New Labour</h2>
             </div>
 
-            <div className="p-6 sm:p-8 space-y-5 sm:space-y-6">
-              <div className="grid grid-cols-2 gap-6">
+            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -888,7 +900,7 @@ export default function LabourManagementPortal() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Upload Photo</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Upload Photo</label>
                   <div className="flex gap-2 items-center w-full">
                     <input
                       type="file"
@@ -909,9 +921,9 @@ export default function LabourManagementPortal() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Age <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -922,20 +934,24 @@ export default function LabourManagementPortal() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Contact <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
+                    inputMode="numeric"
                     value={formData.contact}
-                    onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                    onChange={(e) => {
+                      const numericValue = e.target.value.replace(/[^0-9+\s-]/g, '');
+                      setFormData({ ...formData, contact: numericValue });
+                    }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -946,9 +962,9 @@ export default function LabourManagementPortal() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Skill <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -959,7 +975,7 @@ export default function LabourManagementPortal() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Status <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -974,7 +990,7 @@ export default function LabourManagementPortal() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Type <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -987,9 +1003,9 @@ export default function LabourManagementPortal() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-6 transition-all duration-300">
+              <div className="grid grid-cols-2 gap-4 transition-all duration-300">
                 <div className="transition-all duration-300">
-                  <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-300">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 transition-colors duration-300">
                     {formData.type === 'Permanent' ? 'Permanent Salary' : 'Total Salary'} (₹)
                   </label>
                   <input
@@ -1014,9 +1030,9 @@ export default function LabourManagementPortal() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{formData.type === 'Permanent' ? 'Pending Salary' : 'Paid'} (₹)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{formData.type === 'Permanent' ? 'Pending Salary' : 'Paid'} (₹)</label>
                   <input
                     type="number"
                     value={formData.pendingSalary || ''}
@@ -1025,7 +1041,7 @@ export default function LabourManagementPortal() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{formData.type === 'Permanent' ? 'Advance Taken' : 'Remaining'} (₹)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{formData.type === 'Permanent' ? 'Advance Taken' : 'Remaining'} (₹)</label>
                   <input
                     type="number"
                     value={formData.type === 'Permanent' ? (formData.liability || '') : (formData.remaining || '')}
