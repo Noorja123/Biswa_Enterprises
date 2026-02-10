@@ -19,44 +19,7 @@ type Event = {
   remainingMoney: number
 }
 
-const initialEvents: Event[] = [
-  {
-    id: 1,
-    title: "Corporate Annual Meeting 2024",
-    status: "Upcoming",
-    date: "15/2/2024",
-    location: "Grand Hotel, Park Street",
-    employees: 25,
-    phone: "+91 98765 43210",
-    askedPayment: 150000,
-    paidAmount: 50000,
-    remainingMoney: 100000,
-  },
-  {
-    id: 2,
-    title: "Wedding Reception",
-    status: "Ongoing",
-    date: "10/2/2024",
-    location: "Royal Gardens, Salt Lake",
-    employees: 40,
-    phone: "+91 87654 32109",
-    askedPayment: 200000,
-    paidAmount: 100000,
-    remainingMoney: 100000,
-  },
-  {
-    id: 3,
-    title: "Product Launch Event",
-    status: "Completed",
-    date: "20/1/2024",
-    location: "Convention Center, New Town",
-    employees: 15,
-    phone: "+91 76543 21098",
-    askedPayment: 80000,
-    paidAmount: 80000,
-    remainingMoney: 0,
-  },
-]
+const initialEvents: Event[] = []
 
 const summaryStats = [
   { label: "Total Events", value: "3", icon: Calendar, color: "border-l-blue-600" },
@@ -593,11 +556,14 @@ export function EventDashboard() {
         setEvents(parsed)
       } catch (error) {
         console.error("Failed to parse saved events:", error)
-        localStorage.setItem("dashboard-events", JSON.stringify(initialEvents))
+        // if parsing fails, reset to empty array
+        setEvents([])
+        localStorage.setItem("dashboard-events", JSON.stringify([]))
       }
     } else {
-      // First time - save initial events to localStorage
-      localStorage.setItem("dashboard-events", JSON.stringify(initialEvents))
+      // First time - start with empty events list
+      setEvents([])
+      localStorage.setItem("dashboard-events", JSON.stringify([]))
     }
   }, [])
 

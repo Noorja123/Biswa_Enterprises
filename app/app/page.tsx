@@ -23,56 +23,7 @@ interface Employee {
   imageFile?: File;
 }
 
-const initialEmployees: Employee[] = [
-  {
-    id: 1, 
-    photo: '👨‍💼',
-    name: 'Rajesh Kumar',
-    age: 32,
-    contact: '+91 98765 43210',
-    address: 'Salt Lake, Kolkata',
-    skill: 'Catering Staff',
-    status: 'Active',
-    type: 'Permanent',
-    salary: 25000,
-    hours: 0,
-    pendingSalary: 5000,
-    liability: 0,
-    remaining: 0,
-  },
-  {
-    id: 2,
-    photo: '👨‍💻',
-    name: 'Amit Singh',
-    age: 28,
-    contact: '+91 87654 32109',
-    address: 'Sector V, Kolkata',
-    skill: 'Setup & Installation',
-    status: 'Busy',
-    type: 'Hourly',
-    salary: 500,
-    hours: 8,
-    pendingSalary: 0,
-    liability: 0,
-    remaining: 0,
-  },
-  {
-    id: 3,
-    photo: '👩‍💼',
-    name: 'Priya Sharma',
-    age: 26,
-    contact: '+91 76543 21098',
-    address: 'Park Circus, Kolkata',
-    skill: 'Event Coordinator',
-    status: 'Active',
-    type: 'Permanent',
-    salary: 30000,
-    hours: 0,
-    pendingSalary: 0,
-    liability: 0,
-    remaining: 0,
-  },
-];
+const initialEmployees: Employee[] = [];
 
 export default function LabourManagementPortal() {
   const router = useRouter();
@@ -117,10 +68,12 @@ export default function LabourManagementPortal() {
         setEmployees(JSON.parse(savedEmployees));
       } catch (error) {
         console.error('Failed to load employees from localStorage:', error);
-        setEmployees(initialEmployees);
+        // fallback to empty list if parsing fails
+        setEmployees([]);
       }
     } else {
-      setEmployees(initialEmployees);
+      // start with empty employee list
+      setEmployees([]);
     }
     setIsLoaded(true);
   }, []);
