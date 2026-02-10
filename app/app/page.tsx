@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, LogOut, Users, TrendingUp, Clock, Briefcase, Download, Plus, Eye, Edit2, Trash2 } from 'lucide-react';
+import { Search, LogOut, Users, TrendingUp, Clock, Briefcase, Download, Plus, Eye, Edit2, Trash2, Mail } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Employee {
@@ -34,6 +34,10 @@ export default function LabourManagementPortal() {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [isAddingLabour, setIsAddingLabour] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<Employee | null>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [msgsOpen, setMsgsOpen] = useState(false);
+  const msgsRef = useRef<HTMLDivElement | null>(null);
+  const [selectedMsg, setSelectedMsg] = useState<any | null>(null);
   const [formData, setFormData] = useState<Employee>({
     id: 0,
     photo: '👤',
@@ -59,6 +63,30 @@ export default function LabourManagementPortal() {
       router.push('/admin');
     }
   }, [router]);
+
+  // Load contact messages for admin header and listen for storage changes
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('contact-messages');
+      const list = raw ? JSON.parse(raw) : [];
+      setMessages(list);
+    } catch (err) {
+      console.error('[admin-page] failed to read contact-messages', err);
+    }
+
+    function onStorage(e: StorageEvent) {
+      if (e.key !== 'contact-messages') return;
+      try {
+        const raw = localStorage.getItem('contact-messages');
+        const list = raw ? JSON.parse(raw) : [];
+        setMessages(list);
+      } catch (err) {
+        console.error('[admin-page] failed to parse storage event', err);
+      }
+    }
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   // Load employees from localStorage on mount
   useEffect(() => {
@@ -322,6 +350,18 @@ export default function LabourManagementPortal() {
             <h1 className="text-xl font-semibold">Employee Management Portal</h1>
           </div>
           <div className="flex items-center gap-4">
+            <div>
+              <button
+                type="button"
+                onClick={() => { setMsgsOpen(true); }}
+                className="px-3 py-2 bg-blue-800 hover:bg-blue-700 rounded-lg transition-colors text-white flex items-center gap-2"
+              >
+                <Mail size={16} />
+                {messages.length > 0 && (
+                  <span className="inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-semibold px-2 py-0.5">{messages.length}</span>
+                )}
+              </button>
+            </div>
             <button 
               onClick={() => router.push('/event')}
               className="px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded-lg transition-colors text-white font-medium"
@@ -335,6 +375,95 @@ export default function LabourManagementPortal() {
           </div>
         </div>
       </header>
+
+      {/* Full-page Messages UI (email-like) */}
+      {msgsOpen && (
+        <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto h-full flex flex-col">
+            <div className="flex items-center justify-between py-4 px-4 border-b">
+              <h2 className="text-lg font-semibold">Messages</h2>
+              <div className="flex items-center gap-3">
+                <button
+                  className="px-3 py-2 rounded-md bg-gray-100 text-sm text-gray-700"
+                  onClick={() => { localStorage.removeItem('contact-messages'); setMessages([]); setMsgsOpen(false); }}
+                >
+                  Clear
+                </button>
+                <button
+                  className="px-3 py-2 rounded-md bg-blue-800 text-white"
+                  onClick={() => setMsgsOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-1 overflow-hidden">
+              {/* Left: message list */}
+              <aside className="w-80 min-w-[18rem] border-r bg-gray-50 overflow-y-auto">
+                <div className="p-3">
+                  {messages.length === 0 && (
+                    <div className="py-8 text-center text-gray-500">No messages</div>
+                  )}
+                  {messages.map((m: any) => (
+                    <div
+                      key={m.id}
+                      className="mb-2 cursor-pointer rounded-md p-3 hover:bg-white hover:shadow transition-shadow"
+                      onClick={() => setSelectedMsg(m)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-sm">{m.name || m.email}</div>
+                        <div className="text-xs text-gray-400">{new Date(m.createdAt).toLocaleTimeString()}</div>
+                      </div>
+                      <div className="text-xs text-gray-600 line-clamp-2 whitespace-pre-wrap">{m.message}</div>
+                    </div>
+                  ))}
+                </div>
+              </aside>
+
+              {/* Right: message detail */}
+              <section className="flex-1 overflow-y-auto p-6">
+                {!selectedMsg && (
+                  <div className="h-full flex items-center justify-center text-gray-400">Select a message to view</div>
+                )}
+                {selectedMsg && (
+                  <div className="max-w-4xl">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-xl font-semibold">{selectedMsg.name || selectedMsg.email}</h3>
+                        <div className="text-sm text-gray-500">{selectedMsg.email} • {selectedMsg.phone}</div>
+                      </div>
+                      <div className="text-sm text-gray-400">{new Date(selectedMsg.createdAt).toLocaleString()}</div>
+                    </div>
+
+                    <div className="mt-6 rounded-md border bg-white p-6 whitespace-pre-wrap text-gray-800">{selectedMsg.message}</div>
+
+                    <div className="mt-6 flex gap-3">
+                      <button
+                        className="px-4 py-2 rounded-md bg-blue-800 text-white"
+                        onClick={() => alert('Reply not implemented')}
+                      >
+                        Reply
+                      </button>
+                      <button
+                        className="px-4 py-2 rounded-md bg-red-50 text-red-600 border"
+                        onClick={() => {
+                          const remaining = messages.filter((m: any) => m.id !== selectedMsg.id);
+                          localStorage.setItem('contact-messages', JSON.stringify(remaining));
+                          setMessages(remaining);
+                          setSelectedMsg(null);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </section>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="w-full mx-auto py-6 sm:py-8">

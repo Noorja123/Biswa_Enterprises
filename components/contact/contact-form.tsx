@@ -30,7 +30,31 @@ export function ContactForm() {
       return
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 900))
+    // persist message to localStorage so admin can view it
+    try {
+      const timestamp = Date.now()
+      const payload = {
+        id: timestamp,
+        name: formData.get("name") as string,
+        email,
+        phone,
+        eventName: formData.get("eventName") as string,
+        labours: formData.get("labours") as string,
+        date: formData.get("date") as string,
+        message,
+        createdAt: new Date(timestamp).toISOString(),
+      }
+
+      const raw = localStorage.getItem("contact-messages")
+      const list = raw ? JSON.parse(raw) : []
+      list.unshift(payload)
+      localStorage.setItem("contact-messages", JSON.stringify(list))
+    } catch (err) {
+      // fail silently - localStorage may be unavailable
+      console.error("[contact-form] failed to persist message", err)
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 600))
 
     setIsSubmitting(false)
     setSubmitted(true)
@@ -38,12 +62,12 @@ export function ContactForm() {
 
   if (submitted) {
     return (
-      <section className="bg-white px-8 py-28 lg:px-16">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-green-50 p-10 text-center">
-          <h2 className="mb-2 text-3xl font-extrabold text-green-800">
+      <section className="bg-white px-4 py-4 lg:px-6">
+        <div className="mx-auto max-w-3xl rounded-2xl bg-green-50 p-4 text-center">
+          <h2 className="mb-1 text-xl font-extrabold text-green-800">
             Request Submitted!
           </h2>
-          <p className="text-base text-green-700">
+          <p className="text-sm text-green-700">
             {"Thank you for your request. We'll get back to you within 24 hours."}
           </p>
         </div>
@@ -52,20 +76,17 @@ export function ContactForm() {
   }
 
   return (
-    <section className="bg-white px-8 py-12 lg:px-16">
-      <div className="mx-auto max-w-5xl">
-        <div className="rounded-3xl border border-gray-100 bg-white p-10 shadow-2xl lg:p-16">
-          <div className="mb-8 text-center">
-            <h2 className="mb-2 text-5xl font-extrabold text-[#07538D]">
+    <section className="bg-white px-4 py-4 lg:px-6">
+      <div className="mx-auto max-w-3xl">
+        <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-lg lg:p-6">
+          <div className="mb-4 text-center">
+            <h2 className="mb-1 text-xl font-extrabold text-[#07538D]">
               Request Event Staffing
             </h2>
-            <p className="text-base text-gray-500">
-              {"Fill out the form below and we'll get back to you within 24 hours"}
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-10">
-            <div className="grid gap-10 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2">
               {/* Your Name */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-semibold text-gray-700">
@@ -76,7 +97,7 @@ export function ContactForm() {
                   name="name"
                   placeholder="Enter your name"
                   required
-                  className="border-gray-300 h-14 text-lg rounded-lg px-4 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
 
@@ -90,7 +111,7 @@ export function ContactForm() {
                   name="eventName"
                   placeholder="Enter event name"
                   required
-                  className="border-gray-300 h-14 text-lg rounded-lg px-4 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
 
@@ -105,7 +126,7 @@ export function ContactForm() {
                   type="tel"
                   placeholder="+91 XXXXX XXXXX"
                   required
-                  className="border-gray-300 h-14 text-lg rounded-lg px-4 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
 
@@ -121,7 +142,7 @@ export function ContactForm() {
                   placeholder="Number of workers needed"
                   required
                   min="1"
-                  className="border-gray-300 h-14 text-lg rounded-lg px-4 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
 
@@ -136,7 +157,7 @@ export function ContactForm() {
                   type="email"
                   placeholder="your.email@example.com"
                   required
-                  className="border-gray-300 h-14 text-lg rounded-lg px-4 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
 
@@ -150,7 +171,7 @@ export function ContactForm() {
                   name="date"
                   type="date"
                   required
-                  className="border-gray-300 h-14 text-lg rounded-lg px-4 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
             </div>
@@ -164,18 +185,18 @@ export function ContactForm() {
                 id="message"
                 name="message"
                 required
-                rows={5}
+                rows={4}
                 placeholder="Tell us more about your event, shift timings, venue, or any special requirements"
-                className="w-full resize-none rounded-lg border border-gray-200 px-4 py-3 text-lg placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                className="w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-base placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
               />
             </div>
 
-            <div className="flex justify-center pt-4">
+            <div className="flex justify-center pt-3">
               <Button
                 type="submit"
                 size="lg"
                 disabled={isSubmitting}
-                className="rounded-full bg-linear-to-br from-[#FF8A55] to-[#FF6E39] px-14 py-4 text-lg text-white shadow-xl hover:brightness-95 transition-transform transform hover:-translate-y-0.5"
+                className="rounded-full bg-linear-to-br from-[#FF8A55] to-[#FF6E39] px-10 py-3 text-base text-white shadow hover:brightness-95 transition-transform transform hover:-translate-y-0.5"
               >
                 {isSubmitting ? (
                   "Submitting..."

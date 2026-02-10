@@ -8,7 +8,7 @@ import { TestimonialsSection } from "@/components/home/testimonials-section"
 
 export default function HomePage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col home-full-bleed">
       <Header />
       <main className="flex-1">
         <HeroSection />

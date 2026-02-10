@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col page-full-bleed">
       <Header />
       <main className="flex-1">
         <ContactHero />
