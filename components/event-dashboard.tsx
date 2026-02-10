@@ -660,7 +660,7 @@ export function EventDashboard() {
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated')
     localStorage.removeItem('dashboard-events')
-    router.push('/Admin')
+    router.push('/admin')
   }
 
   // Calculate dynamic stats

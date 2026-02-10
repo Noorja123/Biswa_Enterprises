@@ -56,7 +56,7 @@ export default function LabourManagementPortal() {
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
     if (!isAuthenticated) {
-      router.push('/Admin');
+      router.push('/admin');
     }
   }, [router]);
 
@@ -104,7 +104,7 @@ export default function LabourManagementPortal() {
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('employees');
-    router.push('/Admin');
+    router.push('/admin');
   };
 
   const handleEditClick = (employee: Employee) => {
