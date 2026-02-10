@@ -1,6 +1,6 @@
 export function AboutHero() {
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-20 text-black lg:px-8 lg:py-32">
+    <section className="relative overflow-hidden bg-white px-4 py-10 text-black lg:px-8 lg:py-16">
       <div className="mx-auto max-w-4xl text-center">
         <h1 className="mb-6 text-4xl font-extrabold lg:text-5xl tracking-tight">
           <span className="text-[#07538D]">About</span> <span className="text-[#FF6E39]">Biswas Enterprise</span>

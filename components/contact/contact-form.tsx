@@ -39,11 +39,11 @@ export function ContactForm() {
   }
 
   return (
-    <section className="bg-white px-8 py-28 lg:px-16">
+    <section className="bg-white px-8 py-12 lg:px-16">
       <div className="mx-auto max-w-5xl">
         <div className="rounded-3xl border border-gray-100 bg-white p-10 shadow-2xl lg:p-16">
           <div className="mb-8 text-center">
-            <h2 className="mb-2 text-5xl font-extrabold bg-gradient-to-r from-[#6B6EA3] via-[#C48B8B] to-[#FF6E39] bg-clip-text text-transparent">
+            <h2 className="mb-2 text-5xl font-extrabold text-[#07538D]">
               Request Event Staffing
             </h2>
             <p className="text-base text-gray-500">

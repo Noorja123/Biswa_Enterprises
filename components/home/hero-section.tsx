@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-24 text-black lg:px-8 lg:py-36">
+    <section className="relative overflow-hidden bg-white px-4 py-12 text-black lg:px-8 lg:py-20">
       <div className="mx-auto max-w-4xl text-center">
         <h1 className="mb-6 text-3xl font-bold leading-tight tracking-tight lg:text-5xl">
           <span className="animate-on-load animate-zoom-in-up inline-block italic text-[#07538D]">

@@ -2,7 +2,7 @@ import Image from "next/image"
 
 export function CompanyInfo() {
   return (
-    <section className="bg-white px-4 py-16 lg:px-8">
+    <section className="bg-white px-4 py-8 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <h2 className="mb-6 text-2xl font-bold text-[#6197C0] lg:text-3xl">
           About The Company

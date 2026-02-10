@@ -33,7 +33,7 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="bg-white px-4 py-16 lg:px-8">
+    <section className="bg-white px-4 py-8 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
           {stats.map((stat, index) => (

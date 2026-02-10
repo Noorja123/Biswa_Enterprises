@@ -34,11 +34,11 @@ const galleryImages = [
     alt: "img",
   },
   {
-    src: "/biswas_img/Bimg-10.jpeg",
+    src: "/biswas_img/Bimg-9.jpeg",
     alt: "img",
   },
   {
-    src: "/biswas_img/Bimg-9.jpeg",
+    src: "/biswas_img/Bimg-10.jpeg",
     alt: "img",
   },
   {

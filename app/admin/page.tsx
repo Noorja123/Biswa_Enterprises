@@ -3,9 +3,11 @@
 import React from "react"
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { User, Lock } from 'lucide-react'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -17,6 +19,10 @@ export default function LoginPage() {
     setTimeout(() => {
       setIsLoading(false)
       console.log('Login attempted with:', { username, password })
+      // Set authentication flag in localStorage
+      localStorage.setItem('isAuthenticated', 'true')
+      // Navigate to employee management page
+      router.push('/app')
     }, 1000)
   }
 
@@ -29,12 +35,11 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 animate-fade-in">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-50 rounded-full mb-4">
-            <div className="text-center">
-              <div className="text-sm font-bold text-blue-600">BISWAS</div>
-              <div className="text-xs text-gray-500">ENTERPRISES</div>
-            </div>
-          </div>
+          <img 
+            src="/images/biswas-logo.jpeg" 
+            alt="Biswas Enterprises Logo" 
+            className="h-24 w-auto object-contain mx-auto mb-4"
+          />
         </div>
 
         {/* Welcome Heading */}

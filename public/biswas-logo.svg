@@ -1,0 +1,33 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circular Design -->
+  <g>
+    <!-- Outer Orange Circle Arc -->
+    <path d="M 60 40 A 60 60 0 0 1 120 20" 
+          fill="none" stroke="#FF8C00" stroke-width="12" stroke-linecap="round"/>
+    
+    <!-- Inner Blue Circle Arc -->
+    <path d="M 80 35 A 50 50 0 0 1 105 22" 
+          fill="none" stroke="#0052CC" stroke-width="14" stroke-linecap="round"/>
+    
+    <!-- Bottom Orange Arc -->
+    <path d="M 60 140 A 60 60 0 0 0 120 160" 
+          fill="none" stroke="#FF8C00" stroke-width="12" stroke-linecap="round"/>
+    
+    <!-- Bottom Blue Arc -->
+    <path d="M 80 145 A 50 50 0 0 0 105 158" 
+          fill="none" stroke="#0052CC" stroke-width="14" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Text -->
+  <g>
+    <!-- BISWAS Text -->
+    <text x="150" y="95" font-size="48" font-weight="bold" fill="#0052CC" font-family="Arial, sans-serif">
+      BISWAS
+    </text>
+    
+    <!-- ENTERPRISES Text -->
+    <text x="150" y="125" font-size="24" font-weight="600" fill="#FF8C00" font-family="Arial, sans-serif" letter-spacing="4">
+      ENTERPRISES
+    </text>
+  </g>
+</svg>
