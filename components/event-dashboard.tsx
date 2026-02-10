@@ -695,7 +695,10 @@ export function EventDashboard() {
       <header className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+            <button 
+              onClick={() => router.push("/app")}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h1 className="text-xl font-semibold">Event Status Management</h1>
