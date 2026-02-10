@@ -200,5 +200,68 @@
   opacity: 0;
 }
 
+/* Page gutter: add horizontal spacing to main content sections but exclude header */
+@layer base {
+  :root {
+    --page-gutter-sm: 1rem; /* 16px */
+    --page-gutter-md: 1.5rem; /* 24px */
+    --page-gutter-lg: 2rem; /* 32px */
+  }
+
+  /* Apply padding to common page containers (main, section, and container classes) */
+  main,
+  section,
+  .page,
+  .content,
+  .container,
+  .card,
+  .hero,
+  .footer,
+  .wrapper {
+    padding-left: var(--page-gutter-sm);
+    padding-right: var(--page-gutter-sm);
+  }
+
+  @media (min-width: 640px) {
+    main,
+    section,
+    .page,
+    .content,
+    .container,
+    .card,
+    .hero,
+    .footer,
+    .wrapper {
+      padding-left: var(--page-gutter-md);
+      padding-right: var(--page-gutter-md);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    main,
+    section,
+    .page,
+    .content,
+    .container,
+    .card,
+    .hero,
+    .footer,
+    .wrapper {
+      padding-left: var(--page-gutter-lg);
+      padding-right: var(--page-gutter-lg);
+    }
+  }
+
+  /* Ensure header (top bars) remain full-bleed */
+  header,
+  .site-header,
+  .topbar {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 
 

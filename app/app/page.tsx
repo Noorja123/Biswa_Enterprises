@@ -845,13 +845,13 @@ export default function LabourManagementPortal() {
       {/* Add Labour Modal */}
       {isAddingLabour && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="bg-blue-900 text-white px-6 py-4 sticky top-0">
-              <h2 className="text-2xl font-bold">Add New Labour</h2>
+          <div className="bg-white rounded-lg shadow-2xl max-w-xl w-full max-h-[calc(100vh-3.5rem)] overflow-y-auto">
+            <div className="bg-blue-900 text-white px-4 py-3 sticky top-0">
+              <h2 className="text-xl font-semibold">Add New Labour</h2>
             </div>
 
-            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="p-3 sm:p-4 space-y-2 sm:space-y-3 pb-6">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Name <span className="text-red-500">*</span>
@@ -860,7 +860,7 @@ export default function LabourManagementPortal() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                     placeholder=""
                   />
                 </div>
@@ -871,10 +871,10 @@ export default function LabourManagementPortal() {
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                      className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900"
                     />
                     {formData.photo && (formData.photo.startsWith('data:') || formData.photo.startsWith('http')) && (
-                      <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-300 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-md overflow-hidden border border-gray-300 flex items-center justify-center flex-shrink-0">
                         <img 
                           src={formData.photo} 
                           alt="Preview"
@@ -886,7 +886,7 @@ export default function LabourManagementPortal() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Age <span className="text-red-500">*</span>
@@ -895,7 +895,7 @@ export default function LabourManagementPortal() {
                     type="number"
                     value={formData.age || ''}
                     onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
                 </div>
                 <div>
@@ -910,7 +910,7 @@ export default function LabourManagementPortal() {
                       const numericValue = e.target.value.replace(/[^0-9+\s-]/g, '');
                       setFormData({ ...formData, contact: numericValue });
                     }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
                 </div>
               </div>
@@ -923,11 +923,11 @@ export default function LabourManagementPortal() {
                   type="text"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Skill <span className="text-red-500">*</span>
@@ -936,7 +936,7 @@ export default function LabourManagementPortal() {
                     type="text"
                     value={formData.skill}
                     onChange={(e) => setFormData({ ...formData, skill: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
                 </div>
                 <div>
@@ -946,7 +946,7 @@ export default function LabourManagementPortal() {
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as 'Active' | 'Busy' })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   >
                     <option value="Active">Active</option>
                     <option value="Busy">Busy</option>
@@ -961,48 +961,48 @@ export default function LabourManagementPortal() {
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value as 'Permanent' | 'Hourly' })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                 >
                   <option value="Permanent">Permanent Employee</option>
                   <option value="Hourly">Hourly</option>
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 transition-all duration-300">
-                <div className="transition-all duration-300">
-                  <label className="block text-sm font-medium text-gray-700 mb-1 transition-colors duration-300">
+              <div className="grid grid-cols-2 gap-3 transition-all duration-200">
+                <div className="transition-all duration-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 transition-colors duration-200">
                     {formData.type === 'Permanent' ? 'Permanent Salary' : 'Total Salary'} (₹)
                   </label>
                   <input
                     type="number"
                     value={formData.salary || ''}
                     onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all duration-300"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
                 </div>
-                <div className={`overflow-hidden transition-all duration-300 ${formData.type === 'Hourly' ? 'opacity-100 scale-100' : 'opacity-0 scale-95 h-0'}`}>
+                <div className={`overflow-hidden transition-all duration-200 ${formData.type === 'Hourly' ? 'opacity-100 scale-100' : 'opacity-0 scale-95 h-0'}`}>
                   {formData.type === 'Hourly' && (
-                    <div className="transition-all duration-300">
-                      <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-300">Hours</label>
+                    <div className="transition-all duration-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-200">Hours</label>
                       <input
                         type="number"
                         value={formData.hours || ''}
                         onChange={(e) => setFormData({ ...formData, hours: parseInt(e.target.value) })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all duration-300"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                       />
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{formData.type === 'Permanent' ? 'Pending Salary' : 'Paid'} (₹)</label>
                   <input
                     type="number"
                     value={formData.pendingSalary || ''}
                     onChange={(e) => setFormData({ ...formData, pendingSalary: parseInt(e.target.value) })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
                 </div>
                 <div>
@@ -1011,21 +1011,34 @@ export default function LabourManagementPortal() {
                     type="number"
                     value={formData.type === 'Permanent' ? (formData.liability || '') : (formData.remaining || '')}
                     onChange={(e) => formData.type === 'Permanent' ? setFormData({ ...formData, liability: parseInt(e.target.value) }) : setFormData({ ...formData, remaining: parseInt(e.target.value) })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="flex gap-4 justify-end border-t pt-6">
+              {/* For Hourly employees show Advance Taken as an extra field */}
+              {formData.type === 'Hourly' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Advance Taken (₹)</label>
+                  <input
+                    type="number"
+                    value={formData.liability || ''}
+                    onChange={(e) => setFormData({ ...formData, liability: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
+                  />
+                </div>
+              )}
+
+              <div className="flex gap-3 justify-end border-t pt-4">
                 <button
                   onClick={handleCancel}
-                  className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors"
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-md font-medium transition-colors text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSaveLabour}
-                  className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors"
+                  className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-medium transition-colors text-sm"
                 >
                   Add Labour
                 </button>
