@@ -17,7 +17,20 @@ export function ContactForm() {
     setIsSubmitting(true)
 
     // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // basic front-end validation example
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const email = formData.get("email") as string
+    const phone = formData.get("phone") as string
+    const message = formData.get("message") as string
+
+    if (!email || !phone || !message) {
+      alert("Please complete all required fields.")
+      setIsSubmitting(false)
+      return
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 900))
 
     setIsSubmitting(false)
     setSubmitted(true)
@@ -142,12 +155,27 @@ export function ContactForm() {
               </div>
             </div>
 
+            {/* Message */}
+            <div className="space-y-2">
+              <Label htmlFor="message" className="text-sm font-semibold text-gray-700">
+                Message <span className="text-red-500">*</span>
+              </Label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows={5}
+                placeholder="Tell us more about your event, shift timings, venue, or any special requirements"
+                className="w-full resize-none rounded-lg border border-gray-200 px-4 py-3 text-lg placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+              />
+            </div>
+
             <div className="flex justify-center pt-4">
               <Button
                 type="submit"
                 size="lg"
                 disabled={isSubmitting}
-                className="rounded-full bg-gradient-to-br from-[#FF8A55] to-[#FF6E39] px-14 py-4 text-lg text-white shadow-xl hover:brightness-95 transition-transform transform hover:-translate-y-0.5"
+                className="rounded-full bg-linear-to-br from-[#FF8A55] to-[#FF6E39] px-14 py-4 text-lg text-white shadow-xl hover:brightness-95 transition-transform transform hover:-translate-y-0.5"
               >
                 {isSubmitting ? (
                   "Submitting..."

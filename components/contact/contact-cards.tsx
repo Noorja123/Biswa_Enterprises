@@ -18,7 +18,7 @@ const contactMethods = [
   {
     icon: MapPin,
     title: "Visit Us",
-    info: "Kolkata, West Bengal",
+    info: "Kolkata, West Bengal\nOffice: 12/4 Park Street, Kolkata",
     color: "text-red-500",
     bgColor: "bg-red-50",
   },
@@ -39,10 +39,18 @@ export function ContactCards() {
               >
                 <method.icon className={`h-6 w-6 ${method.color}`} />
               </div>
-              <h3 className={`mb-1 font-semibold ${method.color}`}>
-                {method.title}
-              </h3>
-              <p className="text-sm text-gray-600">{method.info}</p>
+              <h3 className={`mb-1 font-semibold ${method.color}`}>{method.title}</h3>
+              <p className="text-sm whitespace-pre-line text-gray-600">{method.info}</p>
+              {method.title === "Visit Us" && (
+                <a
+                  href="https://www.google.com/maps"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 text-sm text-[#07538D] hover:underline"
+                >
+                  View on map
+                </a>
+              )}
             </div>
           ))}
         </div>
