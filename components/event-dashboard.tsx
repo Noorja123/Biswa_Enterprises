@@ -672,7 +672,9 @@ export function EventDashboard() {
   }
 
   const handleLogout = () => {
-    router.push("/")
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('dashboard-events')
+    router.push('/Admin')
   }
 
   // Calculate dynamic stats
@@ -700,7 +702,7 @@ export function EventDashboard() {
           </div>
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => router.push("/employees")}
+              onClick={() => router.push("/app")}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-full transition-colors"
             >
               <Users className="w-4 h-4" />

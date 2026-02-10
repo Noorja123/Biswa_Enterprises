@@ -313,18 +313,16 @@ export default function LabourManagementPortal() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-blue-900 text-white shadow-md">
+      <header className="bg-gradient-to-r from-blue-800 to-blue-900 text-white shadow-md">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <img 
-              src="/images/biswas-logo.jpeg" 
-              alt="Biswas Enterprises Logo" 
-              className="h-16 w-auto object-contain"
-            />
-            <h1 className="text-3xl font-bold">Labour Management Portal</h1>
+            <h1 className="text-xl font-semibold">Employee Management Portal</h1>
           </div>
           <div className="flex items-center gap-4">
-            <button className="px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded-lg transition-colors">
+            <button 
+              onClick={() => router.push('/event')}
+              className="px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded-lg transition-colors text-white font-medium"
+            >
               Event Status
             </button>
             <button onClick={handleLogout} className="px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg font-medium flex items-center gap-2 transition-colors">
