@@ -334,7 +334,7 @@ export default function LabourManagementPortal() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="w-full mx-auto px-3 sm:px-4 py-6 sm:py-8">
         {/* Dashboard Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Total Employees Card */}
@@ -404,20 +404,20 @@ export default function LabourManagementPortal() {
         </div>
 
         {/* Data Table */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 sm:mb-0">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 sm:mb-0 mx-4">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full" style={{tableLayout: 'fixed'}}>
               <thead>
                 <tr className="bg-blue-900 text-white">
-                  <th className="px-6 py-4 text-left font-semibold">Photo</th>
-                  <th className="px-6 py-4 text-left font-semibold">Name</th>
-                  <th className="px-6 py-4 text-left font-semibold">Age</th>
-                  <th className="px-6 py-4 text-left font-semibold">Contact</th>
-                  <th className="px-6 py-4 text-left font-semibold">Skill</th>
-                  <th className="px-6 py-4 text-left font-semibold">Status</th>
-                  <th className="px-6 py-4 text-left font-semibold">Type</th>
-                  <th className="px-6 py-4 text-left font-semibold">Total Salary</th>
-                  <th className="px-6 py-4 text-left font-semibold">Actions</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '6%'}}>Photo</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '14%'}}>Name</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '5%'}}>Age</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '15%'}}>Contact </th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '12%'}}>Skill</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '11%'}}>Status</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '10%'}}>Type</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '12%'}}>Total Salary</th>
+                  <th className="px-3 py-4 text-left font-semibold" style={{width: '12%'}}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -428,7 +428,7 @@ export default function LabourManagementPortal() {
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-4" style={{width: '6%'}}>
                       {employee.photo.startsWith('data:') || employee.photo.startsWith('http') ? (
                         <img 
                           src={employee.photo} 
@@ -439,16 +439,16 @@ export default function LabourManagementPortal() {
                         <span className="text-3xl">{employee.photo}</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 font-medium text-gray-900">{employee.name}</td>
-                    <td className="px-6 py-4 text-gray-700">{employee.age}</td>
-                    <td className="px-6 py-4 text-gray-700">{employee.contact}</td>
-                    <td className="px-6 py-4 text-gray-700">{employee.skill}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-4 font-medium text-gray-900" style={{width: '14%'}}>{employee.name}</td>
+                    <td className="px-3 py-4 text-gray-700" style={{width: '5%'}}>{employee.age}</td>
+                    <td className="px-3 py-4 text-gray-700" style={{width: '15%'}}>{employee.contact}</td>
+                    <td className="px-3 py-4 text-gray-700" style={{width: '12%'}}>{employee.skill}</td>
+                    <td className="px-3 py-4" style={{width: '11%'}}>
                       <Select 
                         value={employee.status} 
                         onValueChange={(value) => handleStatusChange(employee.id, value as 'Active' | 'Busy')}
                       >
-                        <SelectTrigger className="w-32">
+                        <SelectTrigger className="w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -467,7 +467,7 @@ export default function LabourManagementPortal() {
                         </SelectContent>
                       </Select>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-4" style={{width: '10%'}}>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           employee.type === 'Permanent'
@@ -478,8 +478,8 @@ export default function LabourManagementPortal() {
                         {employee.type}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-medium text-gray-900">₹{employee.salary.toLocaleString()}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-4 font-medium text-gray-900" style={{width: '12%'}}>₹{employee.salary.toLocaleString()}</td>
+                    <td className="px-3 py-4" style={{width: '12%'}}>
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => setSelectedEmployee(employee)}
