@@ -62,26 +62,53 @@ export default function LabourManagementPortal() {
 
   // Load employees from localStorage on mount
   useEffect(() => {
-    const savedEmployees = localStorage.getItem('employees');
-    if (savedEmployees) {
-      try {
-        setEmployees(JSON.parse(savedEmployees));
-      } catch (error) {
-        console.error('Failed to load employees from localStorage:', error);
-        // fallback to empty list if parsing fails
+    try {
+      const saved = localStorage.getItem('employees');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const normalized = parsed.map((emp: any, idx: number) => ({
+            id: typeof emp.id === 'number' ? emp.id : idx + 1,
+            photo: typeof emp.photo === 'string' ? emp.photo : '👤',
+            name: emp.name ?? '',
+            age: Number(emp.age) || 0,
+            contact: emp.contact ?? '',
+            address: emp.address ?? '',
+            skill: emp.skill ?? '',
+            status: emp.status === 'Busy' ? 'Busy' : 'Active',
+            type: emp.type === 'Hourly' ? 'Hourly' : 'Permanent',
+            salary: Number(emp.salary) || 0,
+            hours: Number(emp.hours) || 0,
+            pendingSalary: Number(emp.pendingSalary) || 0,
+            liability: Number(emp.liability) || 0,
+            remaining: Number(emp.remaining) || 0,
+          }));
+          setEmployees(normalized);
+          console.debug('[employees] loaded from localStorage:', normalized.length);
+        } else {
+          setEmployees([]);
+        }
+      } else {
         setEmployees([]);
       }
-    } else {
-      // start with empty employee list
+    } catch (error) {
+      console.error('Failed to load employees from localStorage:', error);
       setEmployees([]);
+    } finally {
+      setIsLoaded(true);
     }
-    setIsLoaded(true);
   }, []);
 
   // Save employees to localStorage whenever they change
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('employees', JSON.stringify(employees));
+      try {
+        const sanitized = employees.map(({ imageFile, ...rest }) => rest);
+        localStorage.setItem('employees', JSON.stringify(sanitized));
+        console.debug('[employees] saved to localStorage:', sanitized.length);
+      } catch (e) {
+        console.error('Failed to save employees to localStorage:', e);
+      }
     }
   }, [employees, isLoaded]);
 
@@ -97,13 +124,14 @@ export default function LabourManagementPortal() {
   }, [employees, searchQuery]);
 
   const handleDelete = (id: number) => {
-    setEmployees(employees.filter(emp => emp.id !== id));
+    const next = employees.filter(emp => emp.id !== id);
+    setEmployees(next);
+    persistEmployees(next);
     setDeleteConfirm(null);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('employees');
     router.push('/admin');
   };
 
@@ -130,7 +158,7 @@ export default function LabourManagementPortal() {
 
   const handleAddLabourClick = () => {
     setFormData({
-      id: Math.max(...employees.map(e => e.id), 0) + 1,
+      id: 0,
       photo: '👤',
       name: '',
       age: 0,
@@ -148,13 +176,26 @@ export default function LabourManagementPortal() {
     });
     setIsAddingLabour(true);
   };
+  const persistEmployees = (list: Employee[]) => {
+    try {
+      const sanitized = list.map(({ imageFile, ...rest }) => rest);
+      localStorage.setItem('employees', JSON.stringify(sanitized));
+      console.debug('[persistEmployees] wrote', sanitized.length);
+    } catch (e) { console.error('persistEmployees failed', e); }
+  }
 
   const handleSaveLabour = () => {
     if (editingEmployee) {
-      setEmployees(employees.map(emp => (emp.id === editingEmployee.id ? formData : emp)));
+      const next = employees.map(emp => (emp.id === editingEmployee.id ? formData : emp));
+      setEmployees(next);
+      persistEmployees(next);
       setEditingEmployee(null);
     } else {
-      setEmployees([...employees, formData]);
+      const nextId = Math.max(...employees.map(e => e.id), 0) + 1;
+      const newEmp = { ...formData, id: nextId };
+      const next = [...employees, newEmp];
+      setEmployees(next);
+      persistEmployees(next);
       setIsAddingLabour(false);
     }
     setFormData({
@@ -199,9 +240,9 @@ export default function LabourManagementPortal() {
   };
 
   const handleStatusChange = (employeeId: number, newStatus: 'Active' | 'Busy') => {
-    setEmployees(employees.map(emp => 
-      emp.id === employeeId ? { ...emp, status: newStatus } : emp
-    ));
+    const next = employees.map(emp => emp.id === employeeId ? { ...emp, status: newStatus } : emp);
+    setEmployees(next);
+    persistEmployees(next);
   };
 
   const stats = {

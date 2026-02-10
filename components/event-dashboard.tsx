@@ -596,7 +596,11 @@ export function EventDashboard() {
   }
 
   const handleSaveEvent = (updatedEvent: Event) => {
-    setEvents(events.map((e) => (e.id === updatedEvent.id ? updatedEvent : e)))
+    setEvents(prev => {
+      const next = prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
+      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
+      return next
+    })
     setEditingEvent(null)
   }
 
@@ -617,11 +621,19 @@ export function EventDashboard() {
         : newEventData.date,
       remainingMoney: newEventData.askedPayment - newEventData.paidAmount,
     }
-    setEvents([newEvent, ...events])
+    setEvents(prev => {
+      const next = [newEvent, ...prev]
+      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
+      return next
+    })
   }
 
   const handleDeleteEvent = (eventId: number) => {
-    setEvents(events.filter((e) => e.id !== eventId))
+    setEvents(prev => {
+      const next = prev.filter((e) => e.id !== eventId)
+      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
+      return next
+    })
     setDeleteConfirm(null)
   }
 
@@ -630,7 +642,11 @@ export function EventDashboard() {
   }
 
   const handleChangeEventStatus = (id: number, status: string) => {
-    setEvents(events.map(e => e.id === id ? { ...e, status } : e))
+    setEvents(prev => {
+      const next = prev.map(e => e.id === id ? { ...e, status } : e)
+      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
+      return next
+    })
   }
 
   const handleExport = () => {
@@ -659,7 +675,6 @@ export function EventDashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated')
-    localStorage.removeItem('dashboard-events')
     router.push('/admin')
   }
 
