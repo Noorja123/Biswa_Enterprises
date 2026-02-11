@@ -24,8 +24,8 @@ const initialEvents: Event[] = []
 const summaryStats = [
   { label: "Total Events", value: "3", icon: Calendar, color: "border-l-blue-600" },
   { label: "Total Revenue", value: "₹430,000", icon: DollarSign, color: "border-l-green-500" },
-  { label: "Amount Received", value: "₹230,000", icon: DollarSign, color: "border-l-teal-500" },
-  { label: "Pending Payment", value: "₹200,000", icon: DollarSign, color: "border-l-orange-500" },
+  { label: "Amount Received", value: "₹230,000", icon: DollarSign, color: "border-l-orange-500" },
+  { label: "Pending Payment", value: "₹200,000", icon: DollarSign, color: "border-l-indigo-600" },
 ]
 
 
@@ -53,7 +53,7 @@ function StatCard({ label, value, icon: Icon, color }: { label: string; value: s
     <div className={`bg-white rounded-2xl shadow-sm p-5 border-l-4 ${color} flex items-center justify-between`}>
       <div>
         <p className="text-sm text-gray-500 mb-1">{label}</p>
-        <p className={`text-xl font-bold ${label === "Total Events" ? "text-gray-800" : label === "Total Revenue" ? "text-green-600" : label === "Amount Received" ? "text-teal-600" : "text-orange-500"}`}>
+        <p className={`text-xl font-bold ${label === "Total Events" ? "text-gray-800" : label === "Total Revenue" ? "text-green-600" : label === "Amount Received" ? "text-orange-500" : "text-indigo-600"}`}>
           {value}
         </p>
       </div>
@@ -560,27 +560,31 @@ export function EventDashboard() {
   useEffect(() => {
     setIsMounted(true)
     const savedEvents = localStorage.getItem("dashboard-events")
-    if (savedEvents) {
+    if (savedEvents !== null) {
       try {
         const parsed = JSON.parse(savedEvents)
-        setEvents(parsed)
+        if (Array.isArray(parsed)) {
+          setEvents(parsed)
+        } else {
+          setEvents([])
+        }
       } catch (error) {
         console.error("Failed to parse saved events:", error)
-        // if parsing fails, reset to empty array
         setEvents([])
-        localStorage.setItem("dashboard-events", JSON.stringify([]))
       }
     } else {
-      // First time - start with empty events list
       setEvents([])
-      localStorage.setItem("dashboard-events", JSON.stringify([]))
     }
   }, [])
 
-  // Save events to localStorage whenever they change (only after mount)
+  // Consolidated save effect - runs after any event change
   useEffect(() => {
-    if (isMounted) {
-      localStorage.setItem("dashboard-events", JSON.stringify(events))
+    if (isMounted && events.length >= 0) {
+      try {
+        localStorage.setItem("dashboard-events", JSON.stringify(events))
+      } catch (e) {
+        console.error("Failed to save events to localStorage:", e)
+      }
     }
   }, [events, isMounted])
 
@@ -596,11 +600,7 @@ export function EventDashboard() {
   }
 
   const handleSaveEvent = (updatedEvent: Event) => {
-    setEvents(prev => {
-      const next = prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
-      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
-      return next
-    })
+    setEvents(prev => prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e)))
     setEditingEvent(null)
   }
 
@@ -612,7 +612,7 @@ export function EventDashboard() {
   const handleAddEvent = (newEventData: Omit<Event, "id" | "remainingMoney">) => {
     const newEvent: Event = {
       ...newEventData,
-      id: Math.max(...events.map((e) => e.id), 0) + 1,
+      id: events.length > 0 ? Math.max(...events.map((e) => e.id), 0) + 1 : 1,
       date: newEventData.date.includes("-")
         ? (() => {
             const [year, month, day] = newEventData.date.split("-")
@@ -621,19 +621,11 @@ export function EventDashboard() {
         : newEventData.date,
       remainingMoney: newEventData.askedPayment - newEventData.paidAmount,
     }
-    setEvents(prev => {
-      const next = [newEvent, ...prev]
-      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
-      return next
-    })
+    setEvents(prev => [newEvent, ...prev])
   }
 
   const handleDeleteEvent = (eventId: number) => {
-    setEvents(prev => {
-      const next = prev.filter((e) => e.id !== eventId)
-      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
-      return next
-    })
+    setEvents(prev => prev.filter((e) => e.id !== eventId))
     setDeleteConfirm(null)
   }
 
@@ -642,11 +634,7 @@ export function EventDashboard() {
   }
 
   const handleChangeEventStatus = (id: number, status: string) => {
-    setEvents(prev => {
-      const next = prev.map(e => e.id === id ? { ...e, status } : e)
-      try { localStorage.setItem('dashboard-events', JSON.stringify(next)) } catch (e) { console.error(e) }
-      return next
-    })
+    setEvents(prev => prev.map(e => e.id === id ? { ...e, status } : e))
   }
 
   const handleExport = () => {
@@ -686,8 +674,8 @@ export function EventDashboard() {
   const dynamicStats = [
     { label: "Total Events", value: String(events.length), icon: Calendar, color: "border-l-blue-600" },
     { label: "Total Revenue", value: formatCurrency(totalRevenue), icon: DollarSign, color: "border-l-green-500" },
-    { label: "Amount Received", value: formatCurrency(amountReceived), icon: DollarSign, color: "border-l-teal-500" },
-    { label: "Pending Payment", value: formatCurrency(pendingPayment), icon: DollarSign, color: "border-l-orange-500" },
+    { label: "Amount Received", value: formatCurrency(amountReceived), icon: DollarSign, color: "border-l-orange-500" },
+    { label: "Pending Payment", value: formatCurrency(pendingPayment), icon: DollarSign, color: "border-l-indigo-600" },
   ]
 
   return (

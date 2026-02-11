@@ -92,7 +92,7 @@ export default function LabourManagementPortal() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem('employees');
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
           const normalized = parsed.map((emp: any, idx: number) => ({
@@ -127,16 +127,10 @@ export default function LabourManagementPortal() {
     }
   }, []);
 
-  // Save employees to localStorage whenever they change
+  // Consolidated save effect - runs after any employee change
   useEffect(() => {
-    if (isLoaded) {
-      try {
-        const sanitized = employees.map(({ imageFile, ...rest }) => rest);
-        localStorage.setItem('employees', JSON.stringify(sanitized));
-        console.debug('[employees] saved to localStorage:', sanitized.length);
-      } catch (e) {
-        console.error('Failed to save employees to localStorage:', e);
-      }
+    if (isLoaded && employees.length >= 0) {
+      persistEmployees(employees);
     }
   }, [employees, isLoaded]);
 
@@ -154,7 +148,6 @@ export default function LabourManagementPortal() {
   const handleDelete = (id: number) => {
     const next = employees.filter(emp => emp.id !== id);
     setEmployees(next);
-    persistEmployees(next);
     setDeleteConfirm(null);
   };
 
@@ -216,14 +209,12 @@ export default function LabourManagementPortal() {
     if (editingEmployee) {
       const next = employees.map(emp => (emp.id === editingEmployee.id ? formData : emp));
       setEmployees(next);
-      persistEmployees(next);
       setEditingEmployee(null);
     } else {
       const nextId = Math.max(...employees.map(e => e.id), 0) + 1;
       const newEmp = { ...formData, id: nextId };
       const next = [...employees, newEmp];
       setEmployees(next);
-      persistEmployees(next);
       setIsAddingLabour(false);
     }
     setFormData({
@@ -270,7 +261,6 @@ export default function LabourManagementPortal() {
   const handleStatusChange = (employeeId: number, newStatus: 'Active' | 'Busy') => {
     const next = employees.map(emp => emp.id === employeeId ? { ...emp, status: newStatus } : emp);
     setEmployees(next);
-    persistEmployees(next);
   };
 
   const stats = {
