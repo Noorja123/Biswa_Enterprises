@@ -72,32 +72,32 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-[#07538D] shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-14 w-14 md:h-20 md:w-20">
+    <header className="sticky top-0 z-50 bg-white shadow-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="relative h-10 w-10 md:h-12 md:w-12">
             <Image
               src="/images/biswas-logo.jpeg"
               alt="Biswas Enterprises logo"
               fill
-              sizes="(max-width: 768px) 56px, 80px"
+              sizes="(max-width: 768px) 40px, 48px"
               className="object-contain"
             />
           </div>
-          <span className="hidden md:inline text-lg font-bold text-white">BISWAS ENTERPRISE</span>
+          <span className="hidden md:inline text-base font-bold text-gray-900">BISWAS ENTERPRISE</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               className={cn(
-                "rounded-md px-5 py-2 text-sm font-medium transition-colors",
+                "text-sm font-medium transition-colors",
                 pathname === item.href
-                  ? "bg-[#3d7db5] text-white"
-                  : "text-gray-200 hover:bg-[#3d7db5]/50 hover:text-white"
+                  ? "text-[#FF6E39]"
+                  : "text-gray-700 hover:text-[#FF6E39]"
               )}
             >
               {item.name}
@@ -109,7 +109,7 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setMsgsOpen((s) => !s)}
-                className="relative inline-flex items-center rounded-md bg-white/5 p-2 text-white hover:bg-white/10"
+                className="relative inline-flex items-center rounded-md bg-gray-100 p-2 text-gray-700 hover:bg-gray-200"
                 aria-label="Messages"
               >
                 <Mail className="h-5 w-5" />
@@ -147,7 +147,7 @@ export function Header() {
         {/* Mobile Menu Button */}
         <button
           type="button"
-          className="text-white md:hidden"
+          className="text-gray-900 md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -156,7 +156,7 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <nav className="border-t border-white/10 bg-[#07538D] px-4 py-6 md:hidden">
+        <nav className="border-t border-gray-200 bg-white px-4 py-4 md:hidden">
           <div className="flex flex-col gap-2">
             {navItems.map((item) => (
               <Link
@@ -166,8 +166,8 @@ export function Header() {
                 className={cn(
                   "rounded-lg px-4 py-2 text-sm font-medium transition-colors",
                   pathname === item.href
-                    ? "bg-[#6197C0] text-white"
-                    : "text-gray-200 hover:bg-[#6197C0]/50 hover:text-white"
+                    ? "text-[#FF6E39]"
+                    : "text-gray-700 hover:text-[#FF6E39]"
                 )}
               >
                 {item.name}
