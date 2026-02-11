@@ -514,31 +514,89 @@ export default function LabourManagementPortal() {
               </div>
 
               {/* Right: Message Detail */}
-              <div className="flex-1 overflow-y-auto bg-white">
+              <div className="flex-1 overflow-y-auto bg-white flex items-center justify-center p-6">
                 {!selectedMsg ? (
-                  <div className="h-full flex items-center justify-center text-gray-400">
-                    <div className="text-center">
-                      <Mail className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                      <p>Select a message to view details</p>
-                    </div>
+                  <div className="text-center text-gray-400">
+                    <Mail className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                    <p>Select a message to view details</p>
                   </div>
                 ) : (
-                  <div className="p-6 max-w-2xl">
-                    <div className="flex items-start justify-between mb-6 pb-6 border-b">
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gray-800">{selectedMsg.subject || 'Request from ' + (selectedMsg.name || selectedMsg.email)}</h3>
-                        <p className="text-gray-600 mt-3">From: <span className="font-semibold">{selectedMsg.name}</span></p>
-                        <p className="text-gray-600">Email: <span className="font-semibold">{selectedMsg.email}</span></p>
-                        <p className="text-gray-600">Phone: <span className="font-semibold">{selectedMsg.phone}</span></p>
-                        <p className="text-gray-400 text-sm mt-2">{new Date(selectedMsg.createdAt).toLocaleString()}</p>
+                  <div className="w-full max-w-2xl">
+                    {/* Title and Status */}
+                    <div className="mb-8">
+                      <div className="flex items-center justify-between mb-4">
+                        <h1 className="text-3xl font-bold text-gray-900">{selectedMsg.subject || selectedMsg.name}</h1>
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          selectedMsg.status === 'accepted'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-orange-100 text-orange-700'
+                        }`}>
+                          {selectedMsg.status === 'accepted' ? 'Accepted' : 'Pending'}
+                        </span>
                       </div>
                     </div>
-                    <div className="bg-gray-50 rounded-lg p-6 border mb-6">
-                      <p className="text-gray-800 whitespace-pre-wrap">{selectedMsg.message}</p>
+
+                    {/* Requester Information */}
+                    <div className="mb-6 border border-blue-200 rounded-lg p-6 bg-blue-50">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Mail className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-lg font-semibold text-gray-800">Requester Information</h3>
+                      </div>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Name</p>
+                          <p className="text-gray-800 font-medium">{selectedMsg.name}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Email</p>
+                          <p className="text-gray-800 font-medium">{selectedMsg.email}</p>
+                        </div>
+                        <div className="col-span-2">
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Contact Number</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>📞</span> {selectedMsg.phone}</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
+
+                    {/* Event Details */}
+                    <div className="mb-6 border border-orange-200 rounded-lg p-6 bg-orange-50">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-xl">📅</span>
+                        <h3 className="text-lg font-semibold text-gray-800">Event Details</h3>
+                      </div>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Date</p>
+                          <p className="text-gray-800 font-medium">{new Date(selectedMsg.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Time</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>🕐</span> 09:00 AM - 06:00 PM</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Location</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>📍</span> Mumbai Convention Center</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Required Workers</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>👥</span> 25 labours</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Event Description */}
+                    <div className="mb-6 border border-gray-200 rounded-lg p-6 bg-white">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-xl">📋</span>
+                        <h3 className="text-lg font-semibold text-gray-800">Event Description</h3>
+                      </div>
+                      <p className="text-gray-600 leading-relaxed">{selectedMsg.message}</p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
                       <button
-                        className="px-4 py-2 rounded-lg bg-green-50 text-green-600 border border-green-200 text-sm hover:bg-green-100 transition"
+                        className="flex-1 px-6 py-3 rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 transition"
                         onClick={() => {
                           const updated = messages.map(m => m.id === selectedMsg.id ? {...m, status: 'accepted'} : m);
                           setMessages(updated);
@@ -546,10 +604,16 @@ export default function LabourManagementPortal() {
                           setSelectedMsg({...selectedMsg, status: 'accepted'});
                         }}
                       >
-                        Accept
+                        Accept Request
                       </button>
                       <button
-                        className="px-4 py-2 rounded-lg bg-red-50 text-red-600 border border-red-200 text-sm hover:bg-red-100 transition"
+                        className="flex-1 px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                        onClick={() => {}}
+                      >
+                        Send Message
+                      </button>
+                      <button
+                        className="px-6 py-3 rounded-lg bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition"
                         onClick={() => {
                           const updated = messages.filter((m: any) => m.id !== selectedMsg.id);
                           setMessages(updated);
@@ -557,7 +621,7 @@ export default function LabourManagementPortal() {
                           setSelectedMsg(null);
                         }}
                       >
-                        Delete
+                        Decline
                       </button>
                     </div>
                   </div>
