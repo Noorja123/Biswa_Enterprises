@@ -11,9 +11,9 @@ export function HeroSection() {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Left Content */}
           <div className="flex flex-col justify-center">
-            <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight text-black lg:text-6xl">
-              effortless work<br />
-              start with us
+            <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight lg:text-6xl">
+              <span className="text-[#1A4D8C]">Effortless work</span><br />
+              <span className="text-[#F27123]">start with us</span>
             </h1>
 
             <p className="mb-8 text-lg text-gray-700">
@@ -33,13 +33,13 @@ export function HeroSection() {
 
           {/* Right Image */}
           <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md lg:max-w-lg">
+            <div className="relative w-full max-w-lg lg:max-w-2xl">
               <Image
                 src="/biswas_img/Bimg-3.jpeg"
                 alt="Event team"
-                width={500}
-                height={500}
-                className="w-full h-auto rounded-full object-cover shadow-lg"
+                width={700}
+                height={700}
+                className="w-full h-auto object-cover shadow-lg border-4 border-gray-200"
               />
             </div>
           </div>

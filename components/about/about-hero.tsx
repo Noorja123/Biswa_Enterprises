@@ -8,7 +8,7 @@ export function AboutHero() {
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div>
             <h1 className="mb-4 text-4xl font-extrabold lg:text-5xl tracking-tight">
-              <span className="text-[#07538D]">About</span> <span className="text-[#FF6E39]">Biswas Enterprise</span>
+              <span className="text-[#07538D]">About</span> <span className="text-[#FF6E39]">Us</span>
             </h1>
             <p className="mb-6 max-w-xl text-lg text-gray-700">
               Your trusted partner in event management and staffing solutions since 2009. We combine local expertise with a large pool of trained staff to deliver flawless events.

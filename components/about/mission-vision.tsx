@@ -2,7 +2,7 @@ import { Target, Eye } from "lucide-react"
 
 export function MissionVision() {
   return (
-    <section className="bg-gray-50 px-4 py-16 lg:px-8">
+    <section className="bg-white px-4 py-16 lg:px-8">
       <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
         {/* Mission Card */}
         <div className="rounded-xl bg-white p-8 shadow-lg">

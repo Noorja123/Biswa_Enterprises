@@ -72,15 +72,15 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-md border-b border-gray-200">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-10 w-10 md:h-12 md:w-12">
+          <div className="relative h-16 w-16 md:h-20 md:w-20">
             <Image
-              src="/images/biswas-logo.jpeg"
+              src="/biswas_logo-removebg-preview.png"
               alt="Biswas Enterprises logo"
               fill
-              sizes="(max-width: 768px) 40px, 48px"
+              sizes="(max-width: 768px) 64px, 80px"
               className="object-contain"
             />
           </div>
@@ -88,16 +88,16 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               className={cn(
-                "text-sm font-medium transition-colors",
+                "text-base font-medium transition-colors",
                 pathname === item.href
-                  ? "text-[#FF6E39]"
-                  : "text-gray-700 hover:text-[#FF6E39]"
+                  ? "text-[#1A4D8C] font-semibold"
+                  : "text-gray-800 hover:text-[#1A4D8C]"
               )}
             >
               {item.name}

@@ -53,7 +53,7 @@ const galleryImages = [
 
 export function Gallery() {
   return (
-    <section className="bg-gray-50 px-4 py-16 lg:px-8">
+    <section className="bg-white px-4 py-16 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <div className="animate-on-load animate-zoom-in mb-12 text-center">
           <h2 className="mb-3 text-3xl font-bold text-[#FF6E39] lg:text-4xl">

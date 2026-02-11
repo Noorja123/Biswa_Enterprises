@@ -1,26 +1,30 @@
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Trophy, PartyPopper, Clock } from "lucide-react"
 
 const services = [
   {
     title: "Corporate Events",
-    description:
-      "Professional staff for conferences, seminars, and business meetings",
+    description: "Corporate Events",
+    icon: Trophy,
+    iconColor: "text-[#1A4D8C]",
   },
   {
     title: "Social Functions",
-    description: "Reliable support for weddings, parties, and celebrations",
+    description: "Social Functions",
+    icon: PartyPopper,
+    iconColor: "text-[#FF6E39]",
   },
   {
     title: "Flexible Staffing",
-    description:
-      "Hourly and permanent staff options to match your requirements",
+    description: "Flexible Staffing",
+    icon: Clock,
+    iconColor: "text-[#1A4D8C]",
   },
 ]
 
 export function ServicesSection() {
   return (
-    <section className="bg-gray-50 px-4 py-16">
+    <section className="bg-white px-4 py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="animate-on-load animate-zoom-in mb-8 text-center">
           <h2 className="mb-3 text-3xl font-bold text-[#07538D] lg:text-4xl">Our Services</h2>
@@ -31,23 +35,24 @@ export function ServicesSection() {
           {services.map((service, index) => (
             <div
               key={service.title}
-              className="animate-on-load animate-zoom-in-up group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:scale-[1.02] hover:shadow-lg"
+              className="animate-on-load animate-zoom-in-up group overflow-hidden rounded-xl border border-gray-200 bg-white bg-opacity-60 backdrop-blur-lg shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl hover:ring-2 hover:ring-orange-400"
               style={{ animationDelay: `${0.2 + index * 0.12}s` }}
             >
               <div className="p-6">
-                <h3 className="mb-2 flex items-center gap-3 text-xl font-semibold text-[#07538D]">
-                  <span className="inline-block h-3 w-3 rounded-full bg-[#FF6E39]" />
+                <div className="mb-4 flex justify-center">
+                  <service.icon className={`h-12 w-12 ${service.iconColor || 'text-orange-500'}`} />
+                </div>
+                <h3 className="mb-2 text-center text-xl font-bold text-gray-800">
                   {service.title}
                 </h3>
-                <p className="mb-4 text-sm text-gray-600">{service.description}</p>
-                <div className="mt-4 flex items-center justify-between">
+                <p className="mb-4 text-center text-sm text-gray-600">{service.description}</p>
+                <div className="mt-4 text-center">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center text-sm font-medium text-[#FF6E39] hover:underline"
+                    className="inline-flex items-center text-sm font-medium text-orange-500 hover:text-orange-600 hover:underline"
                   >
                     Learn More <ArrowRight className="ml-1 h-4 w-4" />
                   </Link>
-                  <span className="text-xs text-gray-400">Custom quotes available</span>
                 </div>
               </div>
             </div>

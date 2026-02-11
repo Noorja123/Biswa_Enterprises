@@ -26,7 +26,7 @@ export function TestimonialsSection() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {testimonials.map((t) => (
-            <div key={t.name} className="rounded-xl border bg-gray-50 p-6 shadow-sm">
+            <div key={t.name} className="rounded-xl border border-gray-200 bg-white bg-opacity-60 backdrop-blur-lg p-6 shadow-lg transition-all hover:scale-105 hover:shadow-xl">
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 overflow-hidden rounded-full">
                   <Image src={t.avatar} alt={t.name} width={48} height={48} className="object-cover" />
