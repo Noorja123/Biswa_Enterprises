@@ -126,6 +126,12 @@ export function ContactForm() {
                   type="tel"
                   placeholder="+91 XXXXX XXXXX"
                   required
+                  maxLength={10}
+                  pattern="[0-9]{10}"
+                  onInput={(e) => {
+                    const target = e.target as HTMLInputElement;
+                    target.value = target.value.replace(/[^0-9]/g, '');
+                  }}
                   className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
                 />
               </div>
