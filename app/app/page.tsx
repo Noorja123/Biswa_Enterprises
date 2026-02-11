@@ -38,6 +38,7 @@ export default function LabourManagementPortal() {
   const [msgsOpen, setMsgsOpen] = useState(false);
   const msgsRef = useRef<HTMLDivElement | null>(null);
   const [selectedMsg, setSelectedMsg] = useState<any | null>(null);
+  const [validationError, setValidationError] = useState<string>('');
   const [formData, setFormData] = useState<Employee>({
     id: 0,
     photo: '👤',
@@ -206,6 +207,34 @@ export default function LabourManagementPortal() {
   }
 
   const handleSaveLabour = () => {
+    // Validation
+    setValidationError('');
+    
+    if (!formData.name.trim()) {
+      setValidationError('Name is required');
+      return;
+    }
+    if (formData.age <= 0) {
+      setValidationError('Age must be greater than 0');
+      return;
+    }
+    if (!formData.contact.trim()) {
+      setValidationError('Contact is required');
+      return;
+    }
+    if (!formData.address.trim()) {
+      setValidationError('Address is required');
+      return;
+    }
+    if (!formData.skill.trim()) {
+      setValidationError('Skill is required');
+      return;
+    }
+    if (formData.salary <= 0) {
+      setValidationError('Salary must be greater than 0');
+      return;
+    }
+
     if (editingEmployee) {
       const next = employees.map(emp => (emp.id === editingEmployee.id ? formData : emp));
       setEmployees(next);
@@ -239,6 +268,7 @@ export default function LabourManagementPortal() {
   const handleCancel = () => {
     setEditingEmployee(null);
     setIsAddingLabour(false);
+    setValidationError('');
     setFormData({
       id: 0,
       photo: '👤',
@@ -983,6 +1013,12 @@ export default function LabourManagementPortal() {
                 </>
               )}
 
+              {validationError && (
+                <div className="p-3 bg-red-50 border border-red-300 rounded-md">
+                  <p className="text-sm text-red-700 font-medium">{validationError}</p>
+                </div>
+              )}
+
               <div className="flex gap-4 justify-end border-t pt-6">
                 <button
                   onClick={handleCancel}
@@ -1186,6 +1222,12 @@ export default function LabourManagementPortal() {
                     onChange={(e) => setFormData({ ...formData, liability: parseInt(e.target.value) })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm"
                   />
+                </div>
+              )}
+
+              {validationError && (
+                <div className="p-3 bg-red-50 border border-red-300 rounded-md">
+                  <p className="text-sm text-red-700 font-medium">{validationError}</p>
                 </div>
               )}
 
