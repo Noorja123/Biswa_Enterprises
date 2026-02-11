@@ -852,19 +852,28 @@ export function EventDashboard() {
 
       {/* Messages Modal */}
       {msgsOpen && (
-        <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto h-full flex flex-col">
-            <div className="flex items-center justify-between py-4 px-4 border-b">
-              <h2 className="text-lg font-semibold">Messages</h2>
+        <div className="fixed inset-0 z-50 bg-gray-100">
+          <div className="h-full flex flex-col">
+            {/* Header */}
+            <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-800">Event Mailbox</h2>
+                  <p className="text-sm text-gray-500">Manage your events</p>
+                </div>
+              </div>
               <div className="flex items-center gap-3">
                 <button
-                  className="px-3 py-2 rounded-md bg-gray-100 text-sm text-gray-700"
+                  className="px-4 py-2 rounded-lg bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 transition"
                   onClick={() => { localStorage.removeItem('contact-messages'); setMessages([]); setMsgsOpen(false); }}
                 >
                   Clear
                 </button>
                 <button
-                  className="px-3 py-2 rounded-md bg-blue-800 text-white"
+                  className="px-4 py-2 rounded-lg bg-blue-800 text-white text-sm hover:bg-blue-900 transition"
                   onClick={() => setMsgsOpen(false)}
                 >
                   Close
@@ -872,55 +881,88 @@ export function EventDashboard() {
               </div>
             </div>
 
+            {/* Main Content Area - Split Layout */}
             <div className="flex flex-1 overflow-hidden">
-              {/* Left: message list */}
-              <aside className="w-80 min-w-[18rem] border-r bg-gray-50 overflow-y-auto">
-                <div className="p-3">
+              {/* Left: Messages List */}
+              <div className="w-96 border-r bg-gray-50 overflow-y-auto">
+                <div className="p-4">
                   {messages.length === 0 && (
-                    <div className="py-8 text-center text-gray-500">No messages</div>
+                    <div className="py-16 text-center text-gray-500">
+                      <Mail className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                      <p className="text-lg">No messages</p>
+                    </div>
                   )}
-                  {messages.map((m: any) => (
-                    <div
-                      key={m.id}
-                      className="mb-2 cursor-pointer rounded-md p-3 hover:bg-white hover:shadow transition-shadow"
-                      onClick={() => setSelectedMsg(m)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="font-semibold text-sm">{m.name || m.email}</div>
-                        <div className="text-xs text-gray-400">{new Date(m.createdAt).toLocaleTimeString()}</div>
-                      </div>
-                      <div className="text-xs text-gray-600 line-clamp-2 whitespace-pre-wrap">{m.message}</div>
-                    </div>
-                  ))}
+                  <div className="space-y-3">
+                    {messages.map((m: any) => {
+                      const isSelected = selectedMsg?.id === m.id;
+                      const messageDate = new Date(m.createdAt).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                      });
+                      return (
+                        <div
+                          key={m.id}
+                          onClick={() => {
+                            setSelectedMsg(m);
+                            // Mark message as read
+                            const updated = messages.map(msg => msg.id === m.id ? {...msg, isRead: true} : msg);
+                            setMessages(updated);
+                            localStorage.setItem('contact-messages', JSON.stringify(updated));
+                          }}
+                          className={`p-4 rounded-lg cursor-pointer transition-all ${
+                            isSelected 
+                              ? 'bg-white border-2 border-orange-500 shadow-md'
+                              : 'bg-white border border-gray-200'
+                          } hover:shadow-md hover:border-orange-500`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
+                              m.message.length > 100 ? 'bg-orange-100' : 'bg-blue-100'
+                            }`}>
+                              <Mail className={`w-5 h-5 ${m.message.length > 100 ? 'text-orange-600' : 'text-blue-600'}`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-gray-800 text-sm">{m.subject || m.name || m.email}</h3>
+                              <p className="text-xs text-gray-500 mt-1">{m.name || m.email}</p>
+                              <p className="text-xs text-gray-600 mt-1 line-clamp-2">{m.message}</p>
+                              <p className="text-xs text-gray-400 mt-2">{messageDate}</p>
+                            </div>
+                            {!m.isRead && <div className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-500"></div>}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </aside>
+              </div>
 
-              {/* Right: message detail */}
-              <section className="flex-1 overflow-y-auto p-6">
-                {!selectedMsg && (
-                  <div className="h-full flex items-center justify-center text-gray-400">Select a message to view</div>
-                )}
-                {selectedMsg && (
-                  <div className="max-w-4xl">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold">{selectedMsg.name || selectedMsg.email}</h3>
-                        <div className="text-sm text-gray-500">{selectedMsg.email} • {selectedMsg.phone}</div>
-                      </div>
-                      <div className="text-sm text-gray-400">{new Date(selectedMsg.createdAt).toLocaleString()}</div>
+              {/* Right: Message Detail */}
+              <div className="flex-1 overflow-y-auto bg-white">
+                {!selectedMsg ? (
+                  <div className="h-full flex items-center justify-center text-gray-400">
+                    <div className="text-center">
+                      <Mail className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                      <p>Select a message to view details</p>
                     </div>
-
-                    <div className="mt-6 rounded-md border bg-white p-6 whitespace-pre-wrap text-gray-800">{selectedMsg.message}</div>
-
-                    <div className="mt-6 flex gap-3">
+                  </div>
+                ) : (
+                  <div className="p-6 max-w-2xl">
+                    <div className="flex items-start justify-between mb-6 pb-6 border-b">
+                      <div>
+                        <h3 className="text-2xl font-semibold text-gray-800">{selectedMsg.subject || 'Message from ' + (selectedMsg.name || selectedMsg.email)}</h3>
+                        <p className="text-gray-600 mt-3">From: <span className="font-semibold">{selectedMsg.name}</span></p>
+                        <p className="text-gray-600">Email: <span className="font-semibold">{selectedMsg.email}</span></p>
+                        <p className="text-gray-600">Phone: <span className="font-semibold">{selectedMsg.phone}</span></p>
+                        <p className="text-gray-400 text-sm mt-2">{new Date(selectedMsg.createdAt).toLocaleString()}</p>
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-6 border mb-6">
+                      <p className="text-gray-800 whitespace-pre-wrap">{selectedMsg.message}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
                       <button
-                        className="px-4 py-2 rounded-md bg-blue-800 text-white"
-                        onClick={() => alert('Reply not implemented')}
-                      >
-                        Reply
-                      </button>
-                      <button
-                        className="px-4 py-2 rounded-md bg-red-50 text-red-600 border"
+                        className="px-4 py-2 rounded-lg bg-red-50 text-red-600 border border-red-200 text-sm hover:bg-red-100 transition"
                         onClick={() => {
                           const updated = messages.filter((m: any) => m.id !== selectedMsg.id);
                           setMessages(updated);
@@ -933,7 +975,7 @@ export function EventDashboard() {
                     </div>
                   </div>
                 )}
-              </section>
+              </div>
             </div>
           </div>
         </div>
