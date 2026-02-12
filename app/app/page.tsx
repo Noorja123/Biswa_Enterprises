@@ -325,6 +325,7 @@ export default function LabourManagementPortal() {
     available: employees.filter(emp => emp.status === 'Active').length,
     hourlyLabours: employees.filter(emp => emp.type === 'Hourly').length,
     permanentLabours: employees.filter(emp => emp.type === 'Permanent').length,
+    totalAdvancesTaken: employees.reduce((sum, emp) => sum + emp.liability, 0),
   };
 
   const handleExportCSV = () => {
@@ -714,7 +715,7 @@ export default function LabourManagementPortal() {
       {/* Main Content */}
       <main className="w-full mx-auto py-6 sm:py-8">
         {/* Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Total Employees Card */}
           <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-blue-900">
             <div className="p-6 flex items-center justify-between">
@@ -756,6 +757,17 @@ export default function LabourManagementPortal() {
                 <p className="text-4xl font-bold text-gray-800">{stats.permanentLabours}</p>
               </div>
               <Briefcase size={48} className="text-indigo-500 opacity-80" />
+            </div>
+          </div>
+
+          {/* Total Advances Taken Card */}
+          <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-red-500">
+            <div className="p-6 flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm mb-1">Total Advances</p>
+                <p className="text-4xl font-bold text-gray-800">₹{stats.totalAdvancesTaken.toLocaleString()}</p>
+              </div>
+              <TrendingUp size={48} className="text-red-500 opacity-80" />
             </div>
           </div>
         </div>
@@ -1072,7 +1084,7 @@ export default function LabourManagementPortal() {
                   </label>
                   <input
                     type="number"
-                    value={formData.age}
+                    value={formData.age || ''}
                     onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                   />
@@ -1155,7 +1167,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Hours</label>
                       <input
                         type="number"
-                        value={formData.hours}
+                        value={formData.hours || ''}
                         onChange={(e) => setFormData({ ...formData, hours: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1170,7 +1182,7 @@ export default function LabourManagementPortal() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Permanent Salary (₹)</label>
                     <input
                       type="number"
-                      value={formData.salary}
+                      value={formData.salary || ''}
                       onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                     />
@@ -1180,7 +1192,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Pending Salary (₹)</label>
                       <input
                         type="number"
-                        value={formData.pendingSalary}
+                        value={formData.pendingSalary || ''}
                         onChange={(e) => setFormData({ ...formData, pendingSalary: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1189,7 +1201,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Advance Taken (₹)</label>
                       <input
                         type="number"
-                        value={formData.liability}
+                        value={formData.liability || ''}
                         onChange={(e) => setFormData({ ...formData, liability: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1203,7 +1215,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Total Salary (₹)</label>
                       <input
                         type="number"
-                        value={formData.salary}
+                        value={formData.salary || ''}
                         onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1212,7 +1224,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Paid (₹)</label>
                       <input
                         type="number"
-                        value={formData.pendingSalary}
+                        value={formData.pendingSalary || ''}
                         onChange={(e) => setFormData({ ...formData, pendingSalary: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1221,7 +1233,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Remaining (₹)</label>
                       <input
                         type="number"
-                        value={formData.remaining}
+                        value={formData.remaining || ''}
                         onChange={(e) => setFormData({ ...formData, remaining: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1231,7 +1243,7 @@ export default function LabourManagementPortal() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Advance Taken (₹)</label>
                     <input
                       type="number"
-                      value={formData.liability}
+                      value={formData.liability || ''}
                       onChange={(e) => setFormData({ ...formData, liability: parseInt(e.target.value) })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                     />
