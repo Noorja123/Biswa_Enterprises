@@ -73,14 +73,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-md border-b border-gray-200">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden">
+          <div className="relative h-14 w-14 md:h-16 md:w-16 rounded-full overflow-hidden">
             <Image
               src="/biswas_logo-removebg-preview.png"
               alt="Biswas Enterprises logo"
               fill
-              sizes="(max-width: 768px) 96px, 112px"
+              sizes="(max-width: 768px) 56px, 64px"
               className="object-contain"
             />
           </div>

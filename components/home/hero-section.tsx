@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-white pt-10 lg:pt-0">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Left Content */}
@@ -32,14 +32,30 @@ export function HeroSection() {
           </div>
 
           {/* Right Image */}
-          <div className="flex justify-center lg:justify-end m  ">
-            <div className="relative w-full max-w-lg lg:max-w-2xl  ">
+          <div className="relative flex justify-center lg:justify-end">
+            {/* Decorative Background */}
+            <div
+              className="absolute -right-10 -top-10 h-[35rem] w-[35rem] rounded-full bg-blue-200 opacity-30 blur-3xl lg:-right-20 lg:-top-20 lg:h-[40rem] lg:w-[40rem]"
+              style={{
+                background: 'radial-gradient(circle, #a7d9f8 0%, transparent 70%)',
+              }}
+            ></div>
+            <div
+              className="absolute -bottom-10 -left-10 h-[30rem] w-[30rem] rounded-full bg-blue-300 opacity-30 blur-3xl lg:-bottom-20 lg:-left-20 lg:h-[35rem] lg:w-[35rem]"
+              style={{
+                background: 'radial-gradient(circle, #a7d9f8 0%, transparent 70%)',
+              }}
+            ></div>
+
+            <div
+              className="relative z-10 w-full max-w-2xl overflow-hidden rounded-[60%_40%_30%_70%_/_60%_30%_70%_40%] shadow-2xl lg:max-w-4xl"
+            >
               <Image
                 src="/biswas_img/Bimg-3.jpeg"
                 alt="Event team"
-                width={700}
-                height={700}
-                className="w-full h-[150%] object-cover shadow-lg border-4 border-gray-200 rounded-[10%]  "
+                width={900}
+                height={900}
+                className="h-full w-full object-cover"
               />
             </div>
           </div>
