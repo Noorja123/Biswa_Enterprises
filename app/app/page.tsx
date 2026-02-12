@@ -566,20 +566,20 @@ export default function LabourManagementPortal() {
                       </div>
                       <div className="grid grid-cols-2 gap-6">
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Date</p>
-                          <p className="text-gray-800 font-medium">{new Date(selectedMsg.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Name of Event</p>
+                          <p className="text-gray-800 font-medium">{selectedMsg.eventName || 'N/A'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Time</p>
-                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>🕐</span> 09:00 AM - 06:00 PM</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Date of Event</p>
+                          <p className="text-gray-800 font-medium">{selectedMsg.date || 'N/A'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Location</p>
-                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>📍</span> Mumbai Convention Center</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Event Location</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>📍</span> {selectedMsg.location || 'N/A'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Required Workers</p>
-                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>👥</span> 25 labours</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Required Labours</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>👥</span> {selectedMsg.labours || 'N/A'} labours</p>
                         </div>
                       </div>
                     </div>
