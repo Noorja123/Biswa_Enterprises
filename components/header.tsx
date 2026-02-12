@@ -75,12 +75,12 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-md border-b border-gray-200">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-16 w-16 md:h-20 md:w-20">
+          <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full overflow-hidden">
             <Image
               src="/biswas_logo-removebg-preview.png"
               alt="Biswas Enterprises logo"
               fill
-              sizes="(max-width: 768px) 64px, 80px"
+              sizes="(max-width: 768px) 96px, 112px"
               className="object-contain"
             />
           </div>
@@ -94,10 +94,10 @@ export function Header() {
               key={item.name}
               href={item.href}
               className={cn(
-                "text-base font-medium transition-colors",
+                "text-base font-medium transition-all duration-300 relative pb-1",
                 pathname === item.href
-                  ? "text-[#1A4D8C] font-semibold"
-                  : "text-gray-800 hover:text-[#1A4D8C]"
+                  ? "text-[#1A4D8C] font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#1A4D8C]"
+                  : "text-gray-800 hover:text-[#1A4D8C] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#1A4D8C] hover:after:w-full after:transition-all after:duration-300"
               )}
             >
               {item.name}
