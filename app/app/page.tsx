@@ -39,6 +39,7 @@ export default function LabourManagementPortal() {
   const [msgSearchQuery, setMsgSearchQuery] = useState('');
   const msgsRef = useRef<HTMLDivElement | null>(null);
   const [selectedMsg, setSelectedMsg] = useState<any | null>(null);
+  const [deletePendingMsg, setDeletePendingMsg] = useState<any | null>(null);
   const [validationError, setValidationError] = useState<string>('');
   const [formData, setFormData] = useState<Employee>({
     id: 0,
@@ -151,6 +152,31 @@ export default function LabourManagementPortal() {
     const next = employees.filter(emp => emp.id !== id);
     setEmployees(next);
     setDeleteConfirm(null);
+  };
+
+  const handleDeleteMessage = (messageId: any) => {
+    try {
+      console.log('Deleting message with ID:', messageId);
+      console.log('All messages before delete:', messages);
+      
+      const updated = messages.filter((msg: any) => {
+        const shouldKeep = String(msg.id) !== String(messageId);
+        console.log(`Comparing ${msg.id} with ${messageId}: keep=${shouldKeep}`);
+        return shouldKeep;
+      });
+
+      console.log('Messages after filter:', updated);
+      setMessages(updated);
+      localStorage.setItem('contact-messages', JSON.stringify(updated));
+      
+      if (selectedMsg?.id === messageId) {
+        setSelectedMsg(null);
+      }
+      
+      console.log('Message deleted successfully');
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
   };
 
   const handleLogout = () => {
@@ -378,8 +404,8 @@ export default function LabourManagementPortal() {
                 className="px-3 py-2 bg-blue-800 hover:bg-blue-700 rounded-lg transition-colors text-white flex items-center gap-2"
               >
                 <Mail size={16} />
-                {messages.length > 0 && (
-                  <span className="inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-semibold px-2 py-0.5">{messages.length}</span>
+                {messages.filter(m => !m.isRead).length > 0 && (
+                  <span className="inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-semibold px-2 py-0.5">{messages.filter(m => !m.isRead).length}</span>
                 )}
               </button>
             </div>
@@ -397,6 +423,48 @@ export default function LabourManagementPortal() {
         </div>
       </header>
 
+      {/* Delete Message Confirmation Dialog */}
+      {deletePendingMsg && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-xs">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div className="bg-red-600 text-white px-6 py-4">
+              <h2 className="text-2xl font-bold">Confirm Delete</h2>
+            </div>
+            <div className="px-6 py-6">
+              <p className="text-gray-800 text-base mb-3">Are you sure you want to delete <span className="font-bold">{deletePendingMsg?.name || 'this message'}</span>?</p>
+              <p className="text-gray-600 text-sm">This action cannot be undone. The message record will be permanently removed from the system.</p>
+            </div>
+            <div className="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t">
+              <button
+                onClick={() => {
+                  console.log('Cancel clicked');
+                  setDeletePendingMsg(null);
+                }}
+                className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg font-medium hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  console.log('Delete button clicked, pendingMsg:', deletePendingMsg);
+                  if (deletePendingMsg && deletePendingMsg.id) {
+                    console.log('Deleting message ID:', deletePendingMsg.id);
+                    handleDeleteMessage(deletePendingMsg.id);
+                    setDeletePendingMsg(null);
+                  } else {
+                    console.error('Invalid message:', deletePendingMsg);
+                    setDeletePendingMsg(null);
+                  }
+                }}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Full-page Messages UI (email-like) */}
       {msgsOpen && (
         <div className="fixed inset-0 z-50 bg-gray-100">
@@ -413,12 +481,6 @@ export default function LabourManagementPortal() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button
-                  className="px-4 py-2 rounded-lg bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 transition"
-                  onClick={() => { localStorage.removeItem('contact-messages'); setMessages([]); setMsgsOpen(false); }}
-                >
-                  Clear
-                </button>
                 <button
                   className="px-4 py-2 rounded-lg bg-blue-800 text-white text-sm hover:bg-blue-900 transition"
                   onClick={() => setMsgsOpen(false)}
@@ -492,7 +554,7 @@ export default function LabourManagementPortal() {
                                 : 'bg-white border-2 border-transparent hover:border-2 hover:border-red-500 hover:shadow-md'
                           }`}
                         >
-                          <div className="flex items-start gap-3">
+                          <div className="flex items-center gap-3">
                             <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
                               isAccepted ? 'bg-green-100' : 'bg-orange-100'
                             }`}>
@@ -505,6 +567,17 @@ export default function LabourManagementPortal() {
                               <p className="text-xs text-gray-400 mt-2">{messageDate}</p>
                             </div>
                             {!m.isRead && <div className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-500"></div>}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                console.log('Delete button clicked, message:', m);
+                                setDeletePendingMsg(m);
+                              }}
+                              className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors flex-shrink-0"
+                              title="Delete message"
+                            >
+                              <Trash2 size={16} />
+                            </button>
                           </div>
                         </div>
                       );
