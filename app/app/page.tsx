@@ -39,6 +39,7 @@ export default function LabourManagementPortal() {
   const [msgSearchQuery, setMsgSearchQuery] = useState('');
   const msgsRef = useRef<HTMLDivElement | null>(null);
   const [selectedMsg, setSelectedMsg] = useState<any | null>(null);
+  const [deletePendingMsg, setDeletePendingMsg] = useState<any | null>(null);
   const [validationError, setValidationError] = useState<string>('');
   const [formData, setFormData] = useState<Employee>({
     id: 0,
@@ -151,6 +152,31 @@ export default function LabourManagementPortal() {
     const next = employees.filter(emp => emp.id !== id);
     setEmployees(next);
     setDeleteConfirm(null);
+  };
+
+  const handleDeleteMessage = (messageId: any) => {
+    try {
+      console.log('Deleting message with ID:', messageId);
+      console.log('All messages before delete:', messages);
+      
+      const updated = messages.filter((msg: any) => {
+        const shouldKeep = String(msg.id) !== String(messageId);
+        console.log(`Comparing ${msg.id} with ${messageId}: keep=${shouldKeep}`);
+        return shouldKeep;
+      });
+
+      console.log('Messages after filter:', updated);
+      setMessages(updated);
+      localStorage.setItem('contact-messages', JSON.stringify(updated));
+      
+      if (selectedMsg?.id === messageId) {
+        setSelectedMsg(null);
+      }
+      
+      console.log('Message deleted successfully');
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
   };
 
   const handleLogout = () => {
@@ -299,6 +325,7 @@ export default function LabourManagementPortal() {
     available: employees.filter(emp => emp.status === 'Active').length,
     hourlyLabours: employees.filter(emp => emp.type === 'Hourly').length,
     permanentLabours: employees.filter(emp => emp.type === 'Permanent').length,
+    totalAdvancesTaken: employees.reduce((sum, emp) => sum + emp.liability, 0),
   };
 
   const handleExportCSV = () => {
@@ -378,8 +405,8 @@ export default function LabourManagementPortal() {
                 className="px-3 py-2 bg-blue-800 hover:bg-blue-700 rounded-lg transition-colors text-white flex items-center gap-2"
               >
                 <Mail size={16} />
-                {messages.length > 0 && (
-                  <span className="inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-semibold px-2 py-0.5">{messages.length}</span>
+                {messages.filter(m => !m.isRead).length > 0 && (
+                  <span className="inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-semibold px-2 py-0.5">{messages.filter(m => !m.isRead).length}</span>
                 )}
               </button>
             </div>
@@ -397,6 +424,48 @@ export default function LabourManagementPortal() {
         </div>
       </header>
 
+      {/* Delete Message Confirmation Dialog */}
+      {deletePendingMsg && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-xs">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div className="bg-red-600 text-white px-6 py-4">
+              <h2 className="text-2xl font-bold">Confirm Delete</h2>
+            </div>
+            <div className="px-6 py-6">
+              <p className="text-gray-800 text-base mb-3">Are you sure you want to delete <span className="font-bold">{deletePendingMsg?.name || 'this message'}</span>?</p>
+              <p className="text-gray-600 text-sm">This action cannot be undone. The message record will be permanently removed from the system.</p>
+            </div>
+            <div className="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t">
+              <button
+                onClick={() => {
+                  console.log('Cancel clicked');
+                  setDeletePendingMsg(null);
+                }}
+                className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg font-medium hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  console.log('Delete button clicked, pendingMsg:', deletePendingMsg);
+                  if (deletePendingMsg && deletePendingMsg.id) {
+                    console.log('Deleting message ID:', deletePendingMsg.id);
+                    handleDeleteMessage(deletePendingMsg.id);
+                    setDeletePendingMsg(null);
+                  } else {
+                    console.error('Invalid message:', deletePendingMsg);
+                    setDeletePendingMsg(null);
+                  }
+                }}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Full-page Messages UI (email-like) */}
       {msgsOpen && (
         <div className="fixed inset-0 z-50 bg-gray-100">
@@ -413,12 +482,6 @@ export default function LabourManagementPortal() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button
-                  className="px-4 py-2 rounded-lg bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 transition"
-                  onClick={() => { localStorage.removeItem('contact-messages'); setMessages([]); setMsgsOpen(false); }}
-                >
-                  Clear
-                </button>
                 <button
                   className="px-4 py-2 rounded-lg bg-blue-800 text-white text-sm hover:bg-blue-900 transition"
                   onClick={() => setMsgsOpen(false)}
@@ -467,6 +530,7 @@ export default function LabourManagementPortal() {
                       .map((m: any) => {
                       const isSelected = selectedMsg?.id === m.id;
                       const isAccepted = m.status === 'accepted' || m.message.toLowerCase().includes('accept');
+                      const isDeclined = m.status === 'declined';
                       const messageDate = new Date(m.createdAt).toLocaleDateString('en-US', { 
                         month: 'short', 
                         day: 'numeric', 
@@ -482,17 +546,19 @@ export default function LabourManagementPortal() {
                             setMessages(updated);
                             localStorage.setItem('contact-messages', JSON.stringify(updated));
                           }}
-                          className={`p-4 rounded-lg cursor-pointer transition-all ${
-                            isSelected 
-                              ? isAccepted
-                                ? 'bg-white border-2 border-green-500 shadow-md'
-                                : 'bg-white border-2 border-red-500 shadow-md'
-                              : isAccepted
-                                ? 'bg-white border-2 border-transparent hover:border-2 hover:border-green-500 hover:shadow-md'
-                                : 'bg-white border-2 border-transparent hover:border-2 hover:border-red-500 hover:shadow-md'
+                          className={`p-4 rounded-lg cursor-pointer transition-all border-2 ${
+                            isDeclined
+                              ? 'bg-white border-red-500 shadow-md'
+                              : isSelected 
+                                ? isAccepted
+                                  ? 'bg-white border-green-500 shadow-md'
+                                  : 'bg-white border-red-500 shadow-md'
+                                : isAccepted
+                                  ? 'bg-white border-gray-200 hover:border-green-500 hover:shadow-md'
+                                  : 'bg-white border-gray-200 hover:border-red-500 hover:shadow-md'
                           }`}
                         >
-                          <div className="flex items-start gap-3">
+                          <div className="flex items-center gap-3">
                             <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
                               isAccepted ? 'bg-green-100' : 'bg-orange-100'
                             }`}>
@@ -505,6 +571,17 @@ export default function LabourManagementPortal() {
                               <p className="text-xs text-gray-400 mt-2">{messageDate}</p>
                             </div>
                             {!m.isRead && <div className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-500"></div>}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                console.log('Delete button clicked, message:', m);
+                                setDeletePendingMsg(m);
+                              }}
+                              className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors flex-shrink-0"
+                              title="Delete message"
+                            >
+                              <Trash2 size={16} />
+                            </button>
                           </div>
                         </div>
                       );
@@ -566,20 +643,20 @@ export default function LabourManagementPortal() {
                       </div>
                       <div className="grid grid-cols-2 gap-6">
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Date</p>
-                          <p className="text-gray-800 font-medium">{new Date(selectedMsg.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Name of Event</p>
+                          <p className="text-gray-800 font-medium">{selectedMsg.eventName || 'N/A'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Time</p>
-                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>🕐</span> 09:00 AM - 06:00 PM</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Date of Event</p>
+                          <p className="text-gray-800 font-medium">{selectedMsg.date || 'N/A'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Location</p>
-                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>📍</span> Mumbai Convention Center</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Event Location</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>📍</span> {selectedMsg.location || 'N/A'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-semibold mb-2">Required Workers</p>
-                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>👥</span> 25 labours</p>
+                          <p className="text-xs text-gray-600 font-semibold mb-2">Required Labours</p>
+                          <p className="text-gray-800 font-medium flex items-center gap-2"><span>👥</span> {selectedMsg.labours || 'N/A'} labours</p>
                         </div>
                       </div>
                     </div>
@@ -615,7 +692,10 @@ export default function LabourManagementPortal() {
                       <button
                         className="px-6 py-3 rounded-lg bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition"
                         onClick={() => {
-                          const updated = messages.filter((m: any) => m.id !== selectedMsg.id);
+                          // Mark message as declined by updating status, don't delete
+                          const updated = messages.map((m: any) => 
+                            m.id === selectedMsg.id ? {...m, status: 'declined'} : m
+                          );
                           setMessages(updated);
                           localStorage.setItem('contact-messages', JSON.stringify(updated));
                           setSelectedMsg(null);
@@ -635,7 +715,7 @@ export default function LabourManagementPortal() {
       {/* Main Content */}
       <main className="w-full mx-auto py-6 sm:py-8">
         {/* Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Total Employees Card */}
           <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-blue-900">
             <div className="p-6 flex items-center justify-between">
@@ -677,6 +757,17 @@ export default function LabourManagementPortal() {
                 <p className="text-4xl font-bold text-gray-800">{stats.permanentLabours}</p>
               </div>
               <Briefcase size={48} className="text-indigo-500 opacity-80" />
+            </div>
+          </div>
+
+          {/* Total Advances Taken Card */}
+          <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-red-500">
+            <div className="p-6 flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm mb-1">Total Advances</p>
+                <p className="text-4xl font-bold text-gray-800">₹{stats.totalAdvancesTaken.toLocaleString()}</p>
+              </div>
+              <TrendingUp size={48} className="text-red-500 opacity-80" />
             </div>
           </div>
         </div>
@@ -993,7 +1084,7 @@ export default function LabourManagementPortal() {
                   </label>
                   <input
                     type="number"
-                    value={formData.age}
+                    value={formData.age || ''}
                     onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                   />
@@ -1076,7 +1167,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Hours</label>
                       <input
                         type="number"
-                        value={formData.hours}
+                        value={formData.hours || ''}
                         onChange={(e) => setFormData({ ...formData, hours: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1091,7 +1182,7 @@ export default function LabourManagementPortal() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Permanent Salary (₹)</label>
                     <input
                       type="number"
-                      value={formData.salary}
+                      value={formData.salary || ''}
                       onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                     />
@@ -1101,7 +1192,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Pending Salary (₹)</label>
                       <input
                         type="number"
-                        value={formData.pendingSalary}
+                        value={formData.pendingSalary || ''}
                         onChange={(e) => setFormData({ ...formData, pendingSalary: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1110,7 +1201,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Advance Taken (₹)</label>
                       <input
                         type="number"
-                        value={formData.liability}
+                        value={formData.liability || ''}
                         onChange={(e) => setFormData({ ...formData, liability: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1124,7 +1215,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Total Salary (₹)</label>
                       <input
                         type="number"
-                        value={formData.salary}
+                        value={formData.salary || ''}
                         onChange={(e) => setFormData({ ...formData, salary: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1133,7 +1224,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Paid (₹)</label>
                       <input
                         type="number"
-                        value={formData.pendingSalary}
+                        value={formData.pendingSalary || ''}
                         onChange={(e) => setFormData({ ...formData, pendingSalary: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1142,7 +1233,7 @@ export default function LabourManagementPortal() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Remaining (₹)</label>
                       <input
                         type="number"
-                        value={formData.remaining}
+                        value={formData.remaining || ''}
                         onChange={(e) => setFormData({ ...formData, remaining: parseInt(e.target.value) })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                       />
@@ -1152,7 +1243,7 @@ export default function LabourManagementPortal() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Advance Taken (₹)</label>
                     <input
                       type="number"
-                      value={formData.liability}
+                      value={formData.liability || ''}
                       onChange={(e) => setFormData({ ...formData, liability: parseInt(e.target.value) })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                     />

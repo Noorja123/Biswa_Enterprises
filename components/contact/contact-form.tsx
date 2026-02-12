@@ -1,9 +1,8 @@
 "use client"
 
 import React from "react"
-
 import { useState } from "react"
-import { Send } from "lucide-react"
+import { Send, MapPin } from "lucide-react" // Added MapPin icon
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,21 +15,19 @@ export function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    // basic front-end validation example
     const form = e.currentTarget
     const formData = new FormData(form)
     const email = formData.get("email") as string
     const phone = formData.get("phone") as string
     const message = formData.get("message") as string
+    const location = formData.get("location") as string // 1. Capture Location
 
-    if (!email || !phone || !message) {
+    if (!email || !phone || !message || !location) {
       alert("Please complete all required fields.")
       setIsSubmitting(false)
       return
     }
 
-    // persist message to localStorage so admin can view it
     try {
       const timestamp = Date.now()
       const payload = {
@@ -38,6 +35,7 @@ export function ContactForm() {
         name: formData.get("name") as string,
         email,
         phone,
+        location, // 2. Add to Storage Payload
         eventName: formData.get("eventName") as string,
         labours: formData.get("labours") as string,
         date: formData.get("date") as string,
@@ -50,12 +48,10 @@ export function ContactForm() {
       list.unshift(payload)
       localStorage.setItem("contact-messages", JSON.stringify(list))
     } catch (err) {
-      // fail silently - localStorage may be unavailable
       console.error("[contact-form] failed to persist message", err)
     }
 
     await new Promise((resolve) => setTimeout(resolve, 600))
-
     setIsSubmitting(false)
     setSubmitted(true)
   }
@@ -136,6 +132,20 @@ export function ContactForm() {
                 />
               </div>
 
+              {/* Event Location - NEW FIELD */}
+              <div className="space-y-2">
+                <Label htmlFor="location" className="text-sm font-semibold text-gray-700">
+                  Event Location <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="location"
+                  name="location"
+                  placeholder="City, Venue, or Area"
+                  required
+                  className="border-gray-300 h-12 text-base rounded-lg px-3 placeholder-gray-400 shadow-sm focus:ring-2 focus:ring-[#FFEDD6] focus:border-[#FF6E39]"
+                />
+              </div>
+
               {/* Required Labours */}
               <div className="space-y-2">
                 <Label htmlFor="labours" className="text-sm font-semibold text-gray-700">
@@ -168,7 +178,8 @@ export function ContactForm() {
               </div>
 
               {/* Date of Event */}
-              <div className="space-y-2">
+              <div className="space-y-2 md:col-span-2"> 
+                {/* Changed to col-span-2 to keep layout balanced */}
                 <Label htmlFor="date" className="text-sm font-semibold text-gray-700">
                   Date of Event <span className="text-red-500">*</span>
                 </Label>

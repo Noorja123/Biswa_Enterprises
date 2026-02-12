@@ -32,14 +32,14 @@ export function HeroSection() {
           </div>
 
           {/* Right Image */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-lg lg:max-w-2xl">
+          <div className="flex justify-center lg:justify-end m  ">
+            <div className="relative w-full max-w-lg lg:max-w-2xl  ">
               <Image
                 src="/biswas_img/Bimg-3.jpeg"
                 alt="Event team"
                 width={700}
                 height={700}
-                className="w-full h-auto object-cover shadow-lg border-4 border-gray-200"
+                className="w-full h-[150%] object-cover shadow-lg border-4 border-gray-200 rounded-[10%]  "
               />
             </div>
           </div>
