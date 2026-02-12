@@ -529,6 +529,7 @@ export default function LabourManagementPortal() {
                       .map((m: any) => {
                       const isSelected = selectedMsg?.id === m.id;
                       const isAccepted = m.status === 'accepted' || m.message.toLowerCase().includes('accept');
+                      const isDeclined = m.status === 'declined';
                       const messageDate = new Date(m.createdAt).toLocaleDateString('en-US', { 
                         month: 'short', 
                         day: 'numeric', 
@@ -544,14 +545,16 @@ export default function LabourManagementPortal() {
                             setMessages(updated);
                             localStorage.setItem('contact-messages', JSON.stringify(updated));
                           }}
-                          className={`p-4 rounded-lg cursor-pointer transition-all ${
-                            isSelected 
-                              ? isAccepted
-                                ? 'bg-white border-2 border-green-500 shadow-md'
-                                : 'bg-white border-2 border-red-500 shadow-md'
-                              : isAccepted
-                                ? 'bg-white border-2 border-transparent hover:border-2 hover:border-green-500 hover:shadow-md'
-                                : 'bg-white border-2 border-transparent hover:border-2 hover:border-red-500 hover:shadow-md'
+                          className={`p-4 rounded-lg cursor-pointer transition-all border-2 ${
+                            isDeclined
+                              ? 'bg-white border-red-500 shadow-md'
+                              : isSelected 
+                                ? isAccepted
+                                  ? 'bg-white border-green-500 shadow-md'
+                                  : 'bg-white border-red-500 shadow-md'
+                                : isAccepted
+                                  ? 'bg-white border-gray-200 hover:border-green-500 hover:shadow-md'
+                                  : 'bg-white border-gray-200 hover:border-red-500 hover:shadow-md'
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -688,7 +691,10 @@ export default function LabourManagementPortal() {
                       <button
                         className="px-6 py-3 rounded-lg bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition"
                         onClick={() => {
-                          const updated = messages.filter((m: any) => m.id !== selectedMsg.id);
+                          // Mark message as declined by updating status, don't delete
+                          const updated = messages.map((m: any) => 
+                            m.id === selectedMsg.id ? {...m, status: 'declined'} : m
+                          );
                           setMessages(updated);
                           localStorage.setItem('contact-messages', JSON.stringify(updated));
                           setSelectedMsg(null);
