@@ -4,14 +4,14 @@ const contactMethods = [
   {
     icon: Phone,
     title: "Call Us",
-    info: "+91 98765 43210",
+    info: "+91 91675 83361 / 79775 45108",
     color: "text-[#1A4D8C]",
     bgColor: "bg-[#1A4D8C]/10",
   },
   {
     icon: Mail,
     title: "Email Us",
-    info: "info@biswas-enterprise.com",
+    info: "info@biswaasenterprises.com",
     color: "text-[#FF6E39]",
     bgColor: "bg-[#FF6E39]/10",
   },

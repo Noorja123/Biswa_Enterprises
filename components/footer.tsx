@@ -12,8 +12,8 @@ export function Footer() {
             </div>
             <div>
               <h3 className="mb-2 text-lg font-semibold">Phone Number</h3>
-              <p className="text-base text-gray-200">+91 98765 43210</p>
-              <p className="text-base text-gray-200">+91 87654 32109</p>
+              <p className="text-base text-gray-200">+91 91675 83361</p>
+              <p className="text-base text-gray-200">+91 79775 45108</p>
             </div>
           </div>
 
@@ -24,8 +24,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="mb-2 text-lg font-semibold">Email Address</h3>
-              <p className="text-base text-gray-200">info@biswas-enterprise.com</p>
-              <p className="text-base text-gray-200">contact@biswas-enterprise.com</p>
+              <p className="text-base text-gray-200">info@biswaasenterprises.com</p>
             </div>
           </div>
 
