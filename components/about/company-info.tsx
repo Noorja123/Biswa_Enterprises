@@ -11,7 +11,7 @@ export function CompanyInfo() {
         <div className="space-y-4 text-gray-600">
           <p>
             Biswas Enterprise is a leading event management and labour solutions
-            provider based in Kolkata, India. With over 15 years of experience, we
+            provider based in Mumbai, India. With over 16 years of experience, we
             have established ourselves as a trusted name in the industry.
           </p>
 
@@ -24,7 +24,7 @@ export function CompanyInfo() {
 
           <p>
             Our commitment to quality, punctuality, and professionalism has earned
-            us the trust of hundreds of satisfied clients across Eastern India. We
+            us the trust of hundreds of satisfied clients across Hyderabad, Kolkata, Ahmedabad. We
             take pride in our ability to scale our services according to the unique
             requirements of each event.
           </p>

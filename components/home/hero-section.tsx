@@ -17,7 +17,7 @@ export function HeroSection() {
             </h1>
 
             <p className="mb-8 text-lg text-gray-700">
-              Your trusted partner in event management and staffing solutions since 2009. We combine local expertise with a large pool of trained staff to deliver flawless events.
+              Your trusted partner in event management and staffing solutions since 2010. We combine local expertise with a large pool of trained staff to deliver flawless events.
             </p>
 
             <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center">

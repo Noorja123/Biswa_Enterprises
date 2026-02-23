@@ -3,21 +3,21 @@ import { Users, Calendar, Award, TrendingUp } from "lucide-react"
 const stats = [
   {
     icon: Users,
-    value: "500+",
+    value: "300+",
     label: "Skilled Workers",
     iconColor: "text-orange-500",
     valueColor: "text-gray-800",
   },
   {
     icon: Calendar,
-    value: "1000+",
+    value: "5000+",
     label: "Events Completed",
     iconColor: "text-orange-500",
     valueColor: "text-gray-800",
   },
   {
     icon: Award,
-    value: "15+",
+    value: "16+",
     label: "Years Experience",
     iconColor: "text-orange-500",
     valueColor: "text-gray-800",

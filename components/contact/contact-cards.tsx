@@ -18,7 +18,7 @@ const contactMethods = [
   {
     icon: MapPin,
     title: "Visit Us",
-    info: "Kolkata, West Bengal\nOffice: 12/4 Park Street, Kolkata",
+    info: "Room No 4, Near Shiv Mandir, Kherwadi Road, Khar East, Mumbai-400051, Maharashtra",
     color: "text-[#1A4D8C]",
     bgColor: "bg-[#1A4D8C]/10",
   },
@@ -43,7 +43,7 @@ export function ContactCards() {
               <p className="text-sm whitespace-pre-line text-gray-600">{method.info}</p>
               {method.title === "Visit Us" && (
                 <a
-                  href="https://www.google.com/maps"
+                  href="https://www.google.com/maps/search/?api=1&query=Room+No+4,+Near+Shiv+Mandir,+Kherwadi+Road,+Khar+East,+Mumbai-400051,+Maharashtra"
                   target="_blank"
                   rel="noreferrer"
                   className="mt-3 text-sm text-[#07538D] hover:underline"

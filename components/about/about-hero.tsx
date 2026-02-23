@@ -11,7 +11,7 @@ export function AboutHero() {
               <span className="text-[#07538D]">About</span> <span className="text-[#FF6E39]">Us</span>
             </h1>
             <p className="mb-6 max-w-xl text-lg text-gray-700">
-              Your trusted partner in event management and staffing solutions since 2009. We combine local expertise with a large pool of trained staff to deliver flawless events.
+              Your trusted partner in event management and staffing solutions since 2010. We combine local expertise with a large pool of trained staff to deliver flawless events.
             </p>
 
             <div className="flex gap-3">

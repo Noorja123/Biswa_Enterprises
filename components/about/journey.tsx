@@ -2,10 +2,10 @@ import { Users, TrendingUp, Target, Eye } from "lucide-react"
 
 const milestones = [
   {
-    year: "2009",
+    year: "2010",
     title: "The Beginning",
     description:
-      "Started with a small team of 20 dedicated professionals serving local events in Kolkata",
+      "Started with a small team of 20 dedicated professionals serving local events in Mumbai",
     icon: Users,
   },
   {
@@ -19,14 +19,14 @@ const milestones = [
     year: "2017",
     title: "Regional Recognition",
     description:
-      "Became the preferred choice for major corporate events in Eastern India",
+      "Became the preferred choice for major corporate events in Hyderabad, Kolkata, Ahmedabad",
     icon: Target,
   },
   {
     year: "2024",
     title: "Industry Leader",
     description:
-      "Now serving 500+ skilled workers and managing 1000+ events annually",
+      "Now serving 300+ skilled workers and managing 5000+ events annually",
     icon: Eye,
   },
 ]

@@ -9,7 +9,7 @@ import { Gallery } from "@/components/about/gallery"
 export const metadata = {
   title: "About Us - Biswas Enterprise",
   description:
-    "Learn about Biswas Enterprise - Your trusted partner in event management and staffing solutions since 2009",
+    "Learn about Biswas Enterprise - Your trusted partner in event management and staffing solutions since 2010",
 }
 
 export default function AboutPage() {
