@@ -18,7 +18,7 @@ const contactMethods = [
   {
     icon: MapPin,
     title: "Visit Us",
-    info: "Room No 4, Near Shiv Mandir, Kherwadi Road, Khar East, Mumbai-400051, Maharashtra",
+    info: "Shop No. C-12 Ground floor, Prabhat Darshan Building, Golibar Road, Khar (E) ,Mumbai -400051",
     color: "text-[#1A4D8C]",
     bgColor: "bg-[#1A4D8C]/10",
   },
@@ -43,7 +43,7 @@ export function ContactCards() {
               <p className="text-sm whitespace-pre-line text-gray-600">{method.info}</p>
               {method.title === "Visit Us" && (
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Room+No+4,+Near+Shiv+Mandir,+Kherwadi+Road,+Khar+East,+Mumbai-400051,+Maharashtra"
+                  href="https://www.google.com/maps/search/?api=1&query=Shop+No.+C-12+Ground+floor,+Prabhat+Darshan+Building,+Golibar+Road,+Khar+(E)+,Mumbai+-400051"
                   target="_blank"
                   rel="noreferrer"
                   className="mt-3 text-sm text-[#07538D] hover:underline"
